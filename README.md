@@ -14,8 +14,6 @@
 
 ## 들여쓰기 및 서식
 
-* LuaRocks 스타일 에서는 3개의 공백으로 들여쓰기 합니다
-
 ```lua
 for i, pkg in ipairs(packages) do
    for name, version in pairs(pkg) do
