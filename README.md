@@ -1,7 +1,7 @@
 
 # 루아 스타일 가이드
 
-이 스타일 가이드는 [LuaRocks](http://github.com/luarocks/luarocks) 프로젝트에서 사용되는 코딩 규칙을 나열합니다. 
+이 스타일 가이드는 루아를 이용한 프로젝트에서 사용되는 코딩 규칙을 나열합니다. 
 
 참고 목록
 
@@ -99,6 +99,16 @@ for _, name in pairs(names) do
    -- ...stuff...
 end
 ```
+* `factory`에는 파스칼 케이스를 사용합니다
+
+```lua
+-- bad
+local player = require('player')
+
+-- good
+local Player = require('player')
+local me = Player({ name = 'Jack' })
+```
 
 * `boolean` 값을 리턴 하는 함수는 is_ 사용을 선호합니다.
 
@@ -149,13 +159,48 @@ local name = "LuaRocks"
 local sentence = 'The name of the program is "LuaRocks"'
 ```
 
+* 80자가 넘어가는 문자열의 경우 연결 연산자 `..`를 써야합니다
+
+```lua
+-- bad
+local errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.'
+
+-- bad
+local errorMessage = 'This is a super long error that \
+was thrown because of Batman. \
+When you stop to think about \
+how Batman had anything to do \
+with this, you would get nowhere \
+fast.'
+
+
+-- bad
+local errorMessage = [[This is a super long error that
+  was thrown because of Batman.
+  When you stop to think about
+  how Batman had anything to do
+  with this, you would get nowhere
+  fast.]]
+
+-- good
+local errorMessage = 'This is a super long error that ' ..
+  'was thrown because of Batman. ' ..
+  'When you stop to think about ' ..
+  'how Batman had anything to do ' ..
+  'with this, you would get nowhere ' ..
+  'fast.'
+```
+
 > **해석:** 큰 따옴표는 많은 수의 프로그래밍 언어에서 문자열 구분 기호로 사용됩니다. 작은 따옴표는 이스케이프를 방지하는 데 유용합니다.
 
 ## 줄 길이
 
 * 줄 길이에는 제한이 없습니다. 줄 길이는 한 줄에 하나의 명령문을 사용하여 자연스럽게 제한됩니다. 여전히 너무 긴 줄이 생성되는 경우(예: 256자 이상의 줄을 생성하는 표현식) 이는 표현식이 너무 복잡하고 합리적인 이름을 가진 하위 표현식으로 분할하는 것이 더 낫다는 것을 의미합니다.
 
-## 함수 선언
+## 함수
+
+* 크고 복잡한 함수보다는 작은 기능을 하는 여러개의 함수가 좋습니다.
+[작은 함수를 써야하는 이유](http://kiki.to/blog/2012/03/16/small-functions-are-good-for-the-universe/)
 
 * 변수형 선언 보다 함수 구문이 좋습니다. 이렇게 하면 익명 함수를 구분하는 데 도움이 됩니다
 
@@ -554,8 +599,6 @@ function manif.load_manifest(repo_url, lua_version)
 end
 ```
 
-> **Rationale:** 이것은 LuaRocks 개발 초기에 채택된 방식입니다
-
 * 형식 변환시 표준 함수를 사용하세요
 
 ```lua
@@ -566,13 +609,13 @@ local total_score = review_score .. ""
 local total_score = tostring(review_score)
 ```
 
-## Errors
+## 에러
 
 * 예상되는 이유로 실패할 수 있는 함수(예: I/O)는 오류 시 nil 및 (문자열) 오류 메시지를 반환해야 하며, 그 뒤에 오류 코드와 같은 다른 반환 값이 올 수 있습니다.
 
 * API 오용과 같은 오류가 발생하면 error() 또는 assert()와 함께 오류가 발생해야 합니다.
 
-## Modules
+## 모듈
 
 [모듈 작성 지침](http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/)
 
