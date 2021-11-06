@@ -1,15 +1,9 @@
 
-# Lua Style Guide
+# 루아 스타일 가이드
 
-This style guides lists the coding conventions used in the
-[LuaRocks](http://github.com/luarocks/luarocks) project. It does not claim to
-be the best Lua coding style in the planet, but it is used successfully in a
-long-running project, and we do provide rationale for many of the design
-decisions listed below.
+이 스타일 가이드는 [LuaRocks](http://github.com/luarocks/luarocks) 프로젝트에서 사용되는 코딩 규칙을 나열합니다. 
 
-The list of recommendations in this document was based on the ones mentioned
-in the following style guides: (sometimes copying material verbatim, sometimes
-giving the opposite advice! :) )
+참고한 목록 입니다
 
 * https://github.com/Olivine-Labs/lua-style-guide/
 * https://github.com/zaki/lua-style-guide
@@ -17,9 +11,9 @@ giving the opposite advice! :) )
 * http://sputnik.freewisdom.org/en/Coding_Standard
 * https://gist.github.com/catwell/b3c01dbea413aa78675740546dfd5ce2
 
-## Indentation and formatting
+## 들여쓰기 및 서식
 
-* Let's address the elephant in the room first. LuaRocks is indented with 3 spaces.
+* LuaRocks 는 3개의 공백으로 들여쓰기 합니다
 
 ```lua
 for i, pkg in ipairs(packages) do
@@ -31,20 +25,11 @@ for i, pkg in ipairs(packages) do
 end
 ```
 
-> **Rationale:** There is no agreement in the Lua community as for indentation, so
-3 spaces lies nicely as a middle ground between the 2-space camp and the
-4-space camp. Also, for a language that nests with `do`/`end` blocks, it
-produces pleasant-looking block-closing staircases, as in the example above.
+* 들여쓰기에 탭과 공백을 함께 사용해서는 안 됩니다.
 
-* One should not use tabs for indentation, or mix it with spaces.
+## 주석
 
-* Use LF (Unix) line endings.
-
-## Documentation
-
-* Document function signatures using
-[LDoc](https://stevedonovan.github.io/ldoc/). Specifying typing information
-after each parameter or return value is a nice plus.
+* [LDoc](https://stevedonovan.github.io/ldoc/) 스타일을 사용하여 문서화합니다. 각 매개변수 또는 반환 값 뒤에 입력 정보를 지정하는 것이 좋습니다.
 
 ```lua
 --- Load a local or remote manifest describing a repository.
@@ -59,9 +44,7 @@ function manif.load_manifest(repo_url, lua_version)
 end
 ```
 
-* Use `TODO` and `FIXME` tags in comments. `TODO` indicates a missing feature
-to be implemented later. `FIXME` indicates a problem in the existing code
-(inefficient implementation, bug, unnecessary code, etc).
+* 주석에 TODO 및 FIXME 태그를 사용해 보세요. TODO는 나중에 구현될 누락된 기능을 나타냅니다. FIXME는 기존 코드의 문제점(비효율적인 구현, 버그, 불필요한 코드 등)을 나타냅니다.
 
 ```lua
 -- TODO: implement method
@@ -70,25 +53,18 @@ local function something()
 end
 ```
 
-* Prefer LDoc comments over the function that explain _what_ the function does
-than inline comments inside the function that explain _how_ it does it. Ideally,
-the implementation should be simple enough so that comments aren't needed. If
-the function grows complex, split it into multiple functions so that their names
-explain what each part does.
+* 인라인 주석보다 LDoc 스타일의 주석이 많이 쓰입니다.
 
-## Variable names
+## 변수 이름
 
-* Variable names with larger scope should be more descriptive than those with
-smaller scope. One-letter variable names should be avoided except for very
-small scopes (less than ten lines) or for iterators.
+* 한 글자로 된 변수 이름은 피해야 합니다.
 
-* `i` should be used only as a counter variable in for loops (either numeric for
-or `ipairs`).
+* `i` 는 for 루프에서 카운터 변수로만 사용해야 합니다(숫자
+또는 'ipairs').
 
-* Prefer more descriptive names than `k` and `v` when iterating with `pairs`,
-unless you are writing a function that operates on generic tables.
+* 키와 값을 가진 테이블을 순회할 때 k 및 v보다 더 자세한 이름이 좋습니다.
 
-* Use `_` for ignored variables (e.g. in for loops:)
+* 안쓰는 변수에는 `_` 를 사용하세요.
 
 ```lua
 for _, item in ipairs(items) do
@@ -96,7 +72,7 @@ for _, item in ipairs(items) do
 end
 ```
 
-* Variables and function names should use `snake_case`.
+* 변수 및 함수 이름은 주로 snake_case를 사용합니다.
 
 ```lua
 -- bad
@@ -114,15 +90,9 @@ local function do_that_thing()
 end
 ```
 
-> **Rationale:** The standard library uses lowercase APIs, with `joinedlowercase`
-names, but this does not scale too well for more complex APIs. `snake_case`
-tends to look good enough and not too out-of-place along side the standard
-APIs.
+> **해석:** 표준 라이브러리는 소문자 이름이 결합된 소문자 API를 사용하지만 더 복잡한 API에서는 확장성이 좋지 않습니다. Snake_case는 표준 API와 함께 적절하게 보이는 경향이 있습니다.
 
-* When doing OOP, classes should use `CamelCase`. Acronyms (e.g. XML) should
-only uppercase the first letter (`XmlDocument`). Methods use `snake_case` too.
-In LuaRocks, this is used in the `Api` object in the `luarocks.upload.api`
-module.
+* 객체 지향으로 코딩할 때 클래스는 CamelCase를 사용해야 합니다. 약어(예: XML)는 첫 번째 문자(XmlDocument)만 대문자여야 합니다. 메소드는 snake_case를 사용합니다.
 
 ```lua
 for _, name in pairs(names) do
@@ -130,7 +100,7 @@ for _, name in pairs(names) do
 end
 ```
 
-* Prefer using `is_` when naming boolean functions:
+* `boolean` 값을 리턴 하는 함수는 is_ 사용을 선호합니다.
 
 ```lua
 -- bad
@@ -144,17 +114,13 @@ local function is_evil(alignment)
 end
 ```
 
-* `UPPER_CASE` is to be used sparingly, with "constants" only.
+* `UPPER_CASE` 오직 상수만 사용합니다
 
-> **Rationale:** "Sparingly", since Lua does not have real constants. This
-notation is most useful in libraries that bind C libraries, when bringing over
-constants from C.
+* `_` 로 시작하는 대문자 이름을 사용하지 마세요. lua의 예약어 입니다
 
-* Do not use uppercase names starting with `_`, they are reserved by Lua.
+## 테이블
 
-## Tables
-
-* When creating a table, prefer populating its fields all at once, if possible:
+* 테이블을 생성할 때 가능하면 해당 필드를 한 번에 모두 채우는 것이 좋습니다
 
 ```lua
 local player = {
@@ -163,14 +129,8 @@ local player = {
 }
 ```
 
-* You can add a trailing comma to all fields, including the last one.
+* 가능한 한 일반 키 구문을 사용하고, 식별자로 표현할 수 없는 이름을 사용할 때는 ["key"] 구문을 사용합니다, 선언시 이 두 표기법이 겹치는 것은 피해주세요
 
-> **Rationale:** This makes the structure of your tables more evident at a glance.
-Trailing commas make it quicker to add new fields and produces shorter diffs.
-
-* Use plain `key` syntax whenever possible, use `["key"]` syntax when using names
-that can't be represented as identifiers and avoid mixing representations in
-a declaration:
 
 ```lua
 table = {
@@ -180,36 +140,24 @@ table = {
 }
 ```
 
-## Strings
+## 문자열
 
-* Use `"double quotes"` for strings; use `'single quotes'` when writing strings
-that contain double quotes.
+* 문자열에 "큰따옴표"를 사용하십시오. 큰따옴표가 포함된 문자열을 작성할 때는 '작은따옴표'를 사용하세요.
 
 ```lua
 local name = "LuaRocks"
 local sentence = 'The name of the program is "LuaRocks"'
 ```
 
-> **Rationale:** Double quotes are used as string delimiters in a larger number of
-programming languages. Single quotes are useful for avoiding escaping when
-using double quotes in literals.
+> **해석:** 큰 따옴표는 많은 수의 프로그래밍 언어에서 문자열 구분 기호로 사용됩니다. 작은 따옴표는 이스케이프를 방지하는 데 유용합니다.
 
 ## Line lengths
 
-* There are no hard or soft limits on line lengths. Line lengths are naturally
-limited by using one statement per line. If that still produces lines that are
-too long (e.g. an expression that produces a line over 256-characters long,
-for example), this means the expression is too complex and would do better
-split into subexpressions with reasonable names.
+* 선 길이에는 제한이 없습니다. 줄 길이는 한 줄에 하나의 명령문을 사용하여 자연스럽게 제한됩니다. 여전히 너무 긴 줄이 생성되는 경우(예: 256자 이상의 줄을 생성하는 표현식) 이는 표현식이 너무 복잡하고 합리적인 이름을 가진 하위 표현식으로 분할하는 것이 더 낫다는 것을 의미합니다.
 
-> **Rationale:** No one works on VT100 terminals anymore. If line lengths are a proxy
-for code complexity, we should address code complexity instead of using line
-breaks to fit mind-bending statements over multiple lines.
+## 함수 선언
 
-## Function declaration syntax
-
-* Prefer function syntax over variable syntax. This helps differentiate between
-named and anonymous functions.
+* 변수 구문보다 함수 구문이 좋습니다. 이렇게 하면 익명 함수를 구분하는 데 도움이 됩니다
 
 ```lua
 -- bad
@@ -223,7 +171,7 @@ local function yup(name, options)
 end
 ```
 
-* Perform validation early and return as early as possible.
+* 유효성은 빨리 검사하고 값 또한 되도록 빨리 반환시켜주는 것이 좋습니다
 
 ```lua
 -- bad
@@ -248,10 +196,9 @@ local function is_good_name(name, options, args)
 end
 ```
 
-## Function calls
+## 함수 호출
 
-* Even though Lua allows it, do not omit parenthesis for functions that take a
-unique string literal argument. 
+* 함수 호출시 문자열 인수가 1개라면 괄호를 생략 가능 하지만 되도록 하지 않습니다
 
 ```lua
 -- bad
@@ -261,14 +208,7 @@ local data = get_data("KRP"..tostring(area_number))
 local data = get_data("KRP")..tostring(area_number)
 ```
 
-> **Rationale:** It is not obvious at a glace what the precedence rules are
-when omitting the parentheses in a function call. Can you quickly tell which
-of the two "good" examples in equivalent to the "bad" one? (It's the second
-one).
-
-* You should not omit parenthesis for functions that take a unique table
-argument on a single line. You may do so for table arguments that span several
-lines.
+* 함수 인자로 테이블 을 1개만 받을 경우 괄호를 생략해도 됩니다
 
 ```lua
 local an_instance = a_module.new {
@@ -277,12 +217,11 @@ local an_instance = a_module.new {
 }
 ```
 
-> **Rationale:** The use as in `a_module.new` above occurs alone in a statement,
-so there are no precedence issues.
+> **해석:** 위와 같은 경우는 우선순위 문제가 발생하지 않습니다
 
-## Table attributes
+## 테이블 속성
 
-* Use dot notation when accessing known properties.
+* 알고 있는 테이블 값에 접근 할 때에는 `.` 표기법을 사용합니다
 
 ```lua
 local luke = {
@@ -297,7 +236,7 @@ local is_jedi = luke["jedi"]
 local is_jedi = luke.jedi
 ```
 
-* Use subscript notation `[]` when accessing properties with a variable or if using a table as a list.
+* 변수가 있는 속성에 액세스하거나 테이블을 목록으로 사용하는 경우 아래 첨자 표기법 `[]` 을 사용합니다.
 
 ```lua
 local vehicles = load_vehicles_from_disk("vehicles.dat")
@@ -311,12 +250,9 @@ for name, cars in pairs(vehicles) do
 end
 ```
 
-> **Rationale:** Using dot notation makes it clearer that the given key is meant
-to be used as a record/object field.
+## 테이블 안의 함수
 
-## Functions in tables
-
-* When declaring modules and classes, declare functions external to the table definition:
+* 모듈 및 클래스를 선언할 때 테이블 외부에 함수를 선언합니다
 
 ```lua
 local my_module = {}
@@ -326,7 +262,7 @@ function my_module.a_function(x)
 end
 ```
 
-* When declaring metatables, declare function internal to the table definition.
+* 메타 테이블을 선언할 때 테이블 정의 내부에 함수를 선언합니다
 
 ```lua
 local version_mt = {
@@ -339,19 +275,9 @@ local version_mt = {
 }
 ```
 
-> **Rationale:** Metatables contain special behavior that affect the tables
-they're assigned (and are used implicitly at the call site), so it's good to
-be able to get a view of the complete behavior of the metatable at a glance.
+## 변수 선언
 
-This is not as important for objects and modules, which usually have way more
-code, and which don't fit in a single screen anyway, so nesting them inside
-the table does not gain much: when scrolling a longer file, it is more evident
-that `check_version` is a method of `Api` if it says `function Api:check_version()`
-than if it says `check_version = function()` under some indentation level.
-
-## Variable declaration
-
-* Always use `local` to declare variables. 
+* 변수를 선언할 때는 항상 'local'을 사용하세요.
 
 ```lua
 -- bad
@@ -361,12 +287,12 @@ superpower = get_superpower()
 local superpower = get_superpower()
 ```
 
-> **Rationale:** Not doing so will result in global variables to avoid polluting
-the global namespace. 
+> **해석:** 전역 공간의 오염을 피하기 위한 방법입니다
 
-## Variable scope
 
-* Assign variables with the smallest possible scope.
+## 변수 스코프
+
+* 가능한 가장 작은 범위 단위로 변수를 할당하세요
 
 ```lua
 -- bad
@@ -402,13 +328,12 @@ local bad = function()
 end
 ```
 
-> **Rationale:** Lua has proper lexical scoping. Declaring the function later means that its
-scope is smaller, so this makes it easier to check for the effects of a variable.
+> **해석:** Lua에는 적절한 렉시컬 스코프가 있습니다. 변수의 범위가 좁을 수록 이펙트를 확인하기 쉬워집니다
 
-## Conditional expressions
+## 조건식
 
-* False and nil are falsy in conditional expressions. Use shortcuts when you
-can, unless you need to know the difference between false and nil.
+* `False` 및 `nil` 은 조건식에서 거짓입니다. `false` 와 `nil` 의 차이를 알아야 하는 경우가 아니면 아래와 같은 방법이 좋습니다
+
 
 ```lua
 -- bad
@@ -422,11 +347,10 @@ if name then
 end
 ```
 
-* Avoid designing APIs which depend on the difference between `nil` and `false`.
+* `nil` 과 `false` 의 차이에 의존하는 API를 설계하지 마세요
 
-* Use the `and`/`or` idiom for the pseudo-ternary operator when it results in
-more straightforward code. When nesting expressions, use parentheses to make it
-easier to scan visually:
+* 삼항 연산자가 더 간단한 코드를 생성하는 경우 및/또는 관용구를 사용합니다. 표현식을 중첩할 때 괄호를 사용하여 시각적으로 쉽게 스캔할 수 있습니다.
+
 
 ```lua
 local function default_name(name)
@@ -439,13 +363,11 @@ local function brew_coffee(machine)
 end
 ```
 
-Note that the `x and y or z` as a substitute for `x ? y : z` does not work if
-`y` may be `nil` or `false` so avoid it altogether for returning booleans or
-values which may be nil.
+ * 리턴 값으로 nil을 내뱉는것은 피해주세요
 
 ## Blocks
 
-* Use single-line blocks only for `then return`, `then break` and `function return` (a.k.a "lambda") constructs:
+* `then break`, `break`, `return`, `람다식` 에만 한줄 블록을 사용합니다
 
 ```lua
 -- good
@@ -472,7 +394,7 @@ if test < 1 and do_complicated_function(test) == false or seven == 8 and nine ==
 end
 ```
 
-* Separate statements onto multiple lines. Do not use semicolons as statement terminators.
+* 문장을 여러 줄로 분리하세요. 구분자로 세미콜론을 사용하지 마세요
 
 ```lua
 -- bad
@@ -485,16 +407,16 @@ a = 1
 b = 2
 ```
 
-## Spacing
+## 주석 스페이싱
 
-* Use a space after `--`. 
+* `--` 뒤에 스페이스를 사용합니다
 
 ```lua
 --bad
 -- good
 ```
 
-* Always put a space after commas and between operators and assignment signs:
+* 항상 쉼표 뒤와 연산자와 기호 사이에 공백을 넣으세요
 
 ```lua
 -- bad
@@ -525,7 +447,7 @@ dog.set("attr", {
 })
 ```
 
-* Indent tables and functions according to the start of the line, not the construct:
+* 구문이 아닌 줄의 시작을 기준으로 테이블과 함수를 들여씁니다
 
 ```lua
 -- bad
@@ -547,20 +469,14 @@ using_a_callback(x, function(...)
 end)
 ```
 
-> **Rationale:** This keep indentation levels aligned at predictable places. You don't
-need to realign the entire block if something in the first line changes (such as
-replacing `x` with `xy` in the `using_a_callback` example above).
-
-* The concatenation operator gets a pass for avoiding spaces:
+* 연결 연산자는 공백을 생략해도 됩니다
 
 ```lua
 -- okay
 local message = "Hello, "..user.."! This is your day # "..day.." in our platform!"
 ```
 
-> **Rationale:** Being at the baseline, the dots already provide some visual spacing.
-
-* No spaces after the name of a function in a declaration or in its arguments:
+* 선언이나 인수에서 함수 이름 뒤에 공백이 없어야 합니다.
 
 ```lua
 -- bad
@@ -574,7 +490,7 @@ local function hello(name, language)
 end
 ```
 
-* Add blank lines between functions:
+* 함수 사이에는 빈 줄을 추가해주세요
 
 ```lua
 -- bad
@@ -595,7 +511,7 @@ local function bar()
 end
 ```
 
-* Avoid aligning variable declarations:
+* 변수 선언을 정렬하지 마세요
 
 ```lua
 -- bad
@@ -607,9 +523,9 @@ local a = 1
 local long_identifier = 2
 ```
 
-> **Rationale:** This produces extra diffs which add noise to `git blame`.
+> **해석:** `git blame` 에 노이즈를 추가시킵니다
 
-* Alignment is occasionally useful when logical correspondence is to be highlighted:
+* 논리적 대응이 강조되어야 할 때 정렬이 때때로 유용합니다.
 
 ```lua
 -- okay
@@ -619,8 +535,7 @@ sys_command(form, UI_FORM_UPDATE_NODE, "sample", FORM_NODE_VISIBLE, false)
 
 ## Typing
 
-* In non-performance critical code, it can be useful to add type-checking assertions
-for function arguments:
+* 성능이 중요하지 않은 코드에서는 함수 인수에 대한 형식 검사 어설션을 추가하는 것이 유용할 수 있습니다.
 
 ```lua
 function manif.load_manifest(repo_url, lua_version)
@@ -631,10 +546,9 @@ function manif.load_manifest(repo_url, lua_version)
 end
 ```
 
-> **Rationale:** This is a practice adopted early on in the development of LuaRocks
-that has shown to be beneficial in many occasions.
+> **Rationale:** 이것은 LuaRocks 개발 초기에 채택된 방식으로 많은 경우에 유익한 것으로 나타났습니다.
 
-* Use the standard functions for type conversion, avoid relying on coercion:
+* 형식 변환시 표준 함수를 사용하세요
 
 ```lua
 -- bad
@@ -646,18 +560,15 @@ local total_score = tostring(review_score)
 
 ## Errors
 
-* Functions that can fail for reasons that are expected (e.g. I/O) should
-return `nil` and a (string) error message on error, possibly followed by other
-return values such as an error code.
+* 예상되는 이유로 실패할 수 있는 함수(예: I/O)는 오류 시 nil 및 (문자열) 오류 메시지를 반환해야 하며, 그 뒤에 오류 코드와 같은 다른 반환 값이 올 수 있습니다.
 
-* On errors such as API misuse, an error should be thrown, either with `error()`
-or `assert()`.
+* API 오용과 같은 오류가 발생하면 error() 또는 assert()와 함께 오류가 발생해야 합니다.
 
 ## Modules
 
-Follow [these guidelines](http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/) for writing modules. In short:
+[모듈 작성 지침](http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/)
 
-* Always require a module into a local variable named after the last component of the module’s full name.
+* 항상 모듈 전체 이름의 마지막 구성 요소를 따서 명명된 로컬 변수에 모듈을 요구합니다.
 
 ```lua
 local bar = require("foo.bar") -- requiring the module
@@ -665,34 +576,29 @@ local bar = require("foo.bar") -- requiring the module
 bar.say("hello") -- using the module
 ```
 
-* Don’t rename modules arbitrarily:
+* 임의로 모듈의 이름을 바꾸지 마십시오.
 
 ```lua
 -- bad
 local skt = require("socket")
 ```
 
-> **Rationale:** Code is much harder to read if we have to keep going back to the top
-to check how you chose to call a module.
+> **Rationale:** 모듈을 호출하기로 선택한 방법을 확인하기 위해 맨 위로 계속 돌아가야 하는 경우 코드를 읽기가 훨씬 더 어렵습니다.
 
-* Start a module by declaring its table using the same all-lowercase local
-name that will be used to require it. You may use an LDoc comment to identify
-the whole module path.
+* 모듈을 요구하는 데 사용되는 동일한 전체 소문자 로컬 이름을 사용하여 테이블을 선언하여 모듈을 시작하십시오. 전체 모듈 경로를 식별하기 위해 LDoc 주석을 사용할 수 있습니다.
 
 ```lua
 --- @module foo.bar
 local bar = {}
 ```
 
-* Try to use names that won't clash with your local variables. For instance, don't
-name your module something like “size”.
+* 지역 변수와 충돌하지 않는 이름을 사용하십시오. 예를 들어, "크기"와 같은 모듈 이름을 지정하지 마십시오.
 
-* Use `local function` to declare _local_ functions only: that is, functions
-that won’t be accessible from outside the module.
+* 로컬 함수를 사용하여 로컬 함수만 선언합니다. 즉, 모듈 외부에서 액세스할 수 없는 함수입니다.
 
-That is, `local function helper_foo()` means that `helper_foo` is really local.
+즉, 로컬 함수 helper_foo()는 helper_foo가 실제로 로컬임을 의미합니다.
 
-* Public functions are declared in the module table, with dot syntax:
+* 공용 함수는 점 구문을 사용하여 모듈 테이블에 선언됩니다.
 
 ```lua
 function bar.say(greeting)
@@ -702,20 +608,15 @@ end
 
 > **Rationale:** Visibility rules are made explicit through syntax. 
 
-* Do not set any globals in your module and always return a table in the end.
+* 모듈에 전역을 설정하지 말고 항상 마지막에 테이블을 반환하십시오.
 
-* If you would like your module to be used as a function, you may set the
-`__call` metamethod on the module table instead.
+* 모듈을 함수로 사용하려면 대신 모듈 테이블에 __call 메타메소드를 설정 하세요
 
-> **Rationale:** Modules should return tables in order to be amenable to have their
-contents inspected via the Lua interactive interpreter or other tools.
+> **Rationale:** 모듈은 Lua 인터프리터 또는 기타 도구를 통해 내용을 검사할 수 있도록 테이블을 반환해야 합니다.
 
-* Requiring a module should cause no side-effect other than loading other
-modules and returning the module table.
+* 모듈을 요구하면 다른 모듈을 로드하고 모듈 테이블을 반환하는 것 외에는 부작용이 발생하지 않아야 합니다.
 
-* A module should not have state (this still needs to be fixed for some
-LuaRocks modules). If a module needs configuration, turn it into a factory.
-For example, do not make something like this:
+* 모듈에는 상태 값이나 변수가 없어야 합니다. 모듈에 구성이 필요한 경우 공장으로 전환하십시오. 예를 들어 다음과 같이 만들지 마십시오
 
 ```lua
 -- bad
@@ -723,7 +624,7 @@ local mp = require "MessagePack"
 mp.set_integer("unsigned")
 ```
 
-and do something like this instead:
+대신 다음과 같이 하십시오.
 
 ```lua
 -- good
@@ -731,7 +632,7 @@ local messagepack = require("messagepack")
 local mpack = messagepack.new({integer = "unsigned"})
 ```
 
-* The invocation of require should look like a regular Lua function call, because it is.
+* require 호출은 일반적인 Lua 함수 호출처럼 보여야 합니다.
 
 ```lua
 -- bad
@@ -741,11 +642,11 @@ local bla = require "bla"
 local bla = require("bla")
 ```
 
-> **Rationale:** This makes it explicit that require is a function call and not a keyword. Many other languages employ keywords for this purpose, so having a "special syntax" for require would trip up Lua newcomers.
+> **해석:** 이것은 require가 키워드가 아니라 함수 호출이라는 것을 명시적으로 만듭니다. 다른 많은 언어는 이 목적을 위해 키워드를 사용하므로 require에 "특별한 구문"을 사용하면 Lua를 처음 접하는 사람들을 곤경에 빠뜨릴 수 있습니다.
 
-## OOP
+## 객체지향
 
-* Create classes like this:
+* 다음과 같은 방법으로 클래스를 만듭니다.
 
 ```lua
 --- @module myproject.myclass
@@ -772,15 +673,12 @@ end
 return myclass
 ```
 
-* The class table and the class metatable should both be local. If containing
-metamethods, the metatable may be declared as a top-level local, named
-`MyClass_mt`.
+* 클래스 테이블과 클래스 메타테이블은 모두 로컬이어야 합니다. 메타메소드를 포함하는 경우 메타테이블은 MyClass_mt라는 최상위 로컬로 선언될 수 있습니다.
 
-> **Rationale:** It’s easy to see in the code above that the functions with
-`MyClass` in their signature are methods. A deeper discussion of the
-design rationale for this is found [here](http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/).
+> **해석:** 
+위의 코드에서 서명에 MyClass가 있는 함수가 메서드라는 것을 쉽게 알 수 있습니다. 이에 대한 설계 근거에 대한 더 깊은 논의는 [여기](http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/).에서 찾을 수 있습니다. 
 
-* Use the method notation when invoking methods:
+* 메소드를 호출할 때 메소드 표기법을 사용하십시오:
 
 ```
 -- bad 
@@ -789,63 +687,37 @@ my_object.my_method(my_object)
 my_object:my_method()
 ```
 
-> **Rationale:** This makes it explicit that the intent is to use the function as an OOP method.
+> **해석:** 이것은 의도가 OOP 메소드로 함수를 사용하는 것임을 명시합니다.
 
-* Do not rely on the `__gc` metamethod to release resources other than memory.
-If your object manage resources such as files, add a `close` method to their
-APIs and do not auto-close via `__gc`. Auto-closing via `__gc` would entice
-users of your module to not close resources as soon as possible. (Note that
-the standard `io` library does not follow this recommendation, and users often
-forget that not closing files immediately can lead to "too many open files"
-errors when the program runs for a while.)
 
-> **Rationale:** The garbage collector performs automatic *memory* management,
-dealing with memory only. There is no guarantees as to when the garbage
-collector will be invoked, and memory pressure does not correlate to pressure
-on other resources. 
+* 메모리 이외의 리소스를 해제하기 위해 __gc 메타메서드에 의존하지 마십시오. 객체가 파일과 같은 리소스를 관리하는 경우 해당 API에 닫기 메서드를 추가하고 __gc를 통해 자동으로 닫지 마십시오. __gc를 통한 자동 닫기는 모듈 사용자가 가능한 한 빨리 리소스를 닫지 않도록 유도합니다. (표준 io 라이브러리는 이 권장 사항을 따르지 않으며 사용자는 종종 파일을 즉시 닫지 않으면 프로그램이 잠시 실행될 때 "열린 파일이 너무 많음" 오류가 발생할 수 있다는 사실을 잊어버립니다.)
 
-## File structure
+> **해석:** 가비지 수집기는 메모리만 처리하는 자동 메모리 관리를 수행합니다. 가비지 수집기가 언제 호출되는지에 대한 보장은 없으며 메모리 압력은 다른 리소스에 대한 압력과 상관 관계가 없습니다.
 
-* Lua files should be named in all lowercase.
+## 파일 구조
 
-* Lua files should be in a top-level `src` directory. The main library file
-should be called `modulename.lua`.
+* Lua 파일의 이름은 모두 소문자로 지정해야 합니다.
 
-* Tests should be in a top-level `spec` directory. LuaRocks uses
-[Busted](http://olivinelabs.com/busted/) for testing.
+* Lua 파일은 최상위 src 디렉토리에 있어야 합니다. 메인 라이브러리 파일은 modulename.lua라고 해야 합니다.
 
-* Executables are in `src/bin` directory.
+* 테스트는 최상위 사양 디렉토리에 있어야 합니다. LuaRocks는 테스트를 위해 [Busted](http://olivinelabs.com/busted/)를 사용합니다.
 
-## Static checking
+* 실행 파일은 src/bin 디렉토리에 있습니다.
 
-It's best if code passes [luacheck](https://github.com/mpeterv/luacheck). If
-it does not with default settings, it should provide a `.luacheckrc` with
-sensible exceptions.
+## 정적 검사
 
-* luacheck warnings of class 6xx refer to whitespace issues and can be
-ignored. Do not send pull requests "fixing" trailing whitespaces.
+코드가 [luacheck](https://github.com/mpeterv/luacheck)를 통과하는 것이 가장 좋습니다. 기본 설정이 없으면 합리적인 예외가 있는 .luacheckrc를 제공해야 합니다.
 
-> **Rationale:** Git is paranoid about trailing whitespace due to the
-patch-file email-based workflow inherited from the Linux kernel mailing list.
-When using the Git tool proper, exceeding whitespace makes no difference
-whatsoever except for being highlighted by Git's coloring (for the aforementioned
-reasons). Git's pedantism about it has spread over the year to the syntax
-highlighting of many text editors and now everyone says they hate trailing
-whitespace without being really able to answer why (the actual cause being
-that tools complain to them about it, for no good reason).
+* 클래스 6xx의 uacheck 경고는 공백 문제를 나타내며 무시할 수 있습니다. 후행 공백을 "수정"하는 풀 요청을 보내지 마십시오.
 
-* luacheck warnings of class 211, 212, 213 (unused variable, argument or loop
-variable) should be ignored, if the unused variable was added explicitly: for
-example, sometimes it is useful, for code understandability, to spell out what
-the keys and values in a table are, even if you're only using one of them.
-Another example is a function that needs to follow a given signature for API
-reasons (e.g. a callback that follows a given format) but doesn't use some of
-its arguments; it's better to spell out in the argument what the API the
-function implements is, instead of adding `_` variables.
+> **Rationale:** Git은 Linux 커널 메일링 리스트에서 상속된 패치 파일 이메일 기반 워크플로 때문에 후행 공백에 대해 편집증적입니다. Git 도구를 적절하게 사용할 때 공백을 초과해도 Git의 색상으로 강조 표시되는 것을 제외하고는 차이가 없습니다(앞서 언급한 이유로). 이에 대한 Git의 현학적 태도는 수년 동안 많은 텍스트 편집기의 구문 강조 표시로 확산되었으며 이제 모든 사람들은 이유에 대해 답변할 수 없는 상태에서 후행 공백을 싫어한다고 말합니다. .
 
-* luacheck warning 542 (empty if branch) can also be ignored, when a sequence
-of `if`/`elseif`/`else` blocks implements a "switch/case"-style list of cases,
-and one of the cases is meant to mean "pass". For example:
+
+* 클래스 211, 212, 213의 luacheck 경고(사용되지 않은 변수, 인수 또는 루프 변수)는 사용되지 않는 변수가 명시적으로 추가된 경우 무시되어야 합니다. 당신이 그들 중 하나만 사용하는 경우에도 테이블에 있습니다. 또 다른 예는 API 이유로 주어진 서명을 따라야 하지만(예: 주어진 형식을 따르는 콜백) 일부 인수를 사용하지 않는 함수입니다. _ 변수를 추가하는 대신 함수가 구현하는 API가 무엇인지 인수에 설명하는 것이 좋습니다.
+
+
+* if/elseif/else 블록의 시퀀스가 ​​"스위치/케이스" 스타일의 케이스 목록을 구현하고 케이스 중 하나가 "통과"를 의미하는 경우 luacheck 경고 542(분기인 경우 비어 있음)도 무시할 수 있습니다. 예를 들어:
+
 
 ```lua
 if warning >= 600 and warning <= 699 then
@@ -857,7 +729,4 @@ else
 end
 ```
 
-> **Rationale:** This avoids writing negated conditions in the final fallback
-case, and it's easy to add another case to the construct without having to
-edit the fallback.
 
