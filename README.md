@@ -3,18 +3,24 @@
 
    >루아 프로젝트에서 사용되는 스타일 가이드입니다
 
+   1. [들여쓰기 및 서식](#indent)
+   1. [주석](#annotation)
+   1. [루아타입](#types)
+   1. [테이블](#tables)
+   1. [문자열](#strings)
+   1. [함수](#functions)
+   1. [변수](#variables)
+   1. [조건식](#conditions)
+   1. [블록](#blocks)
+   1. [타입검사](#type-casting)
+   1. [모듈](#modules)
+   1. [객체지향](#oop)
+   1. [테스팅](#testing)
+   1. [파일구조](#files)
+   1. [참고목록](#lists)
 
-   * 참고 목록
-
-      * https://github.com/luarocks/lua-style-guide
-      * https://github.com/Olivine-Labs/lua-style-guide/
-      * https://github.com/zaki/lua-style-guide
-      * http://lua-users.org/wiki/LuaStyleGuide
-      * http://sputnik.freewisdom.org/en/Coding_Standard
-      * https://gist.github.com/catwell/b3c01dbea413aa78675740546dfd5ce2
-
-## 들여쓰기 및 서식
-- - -
+  
+## <a name='indent'>들여쓰기 및 서식</a>
 
    * 들여쓰기에 탭과 공백을 함께 사용해서는 안 됩니다.
 
@@ -27,493 +33,8 @@
          end
       end
       ```
-
-
-## 주석
-
-   * [LDoc](https://stevedonovan.github.io/ldoc/) 스타일을 사용하여 문서화합니다. 각 매개변수 또는 반환 값 뒤에 입력 정보를 지정하는 것이 좋습니다.
-
-      ```lua
-      --- Load a local or remote manifest describing a repository.
-      -- All functions that use manifest tables assume they were obtained
-      -- through either this function or load_local_manifest.
-      -- @param repo_url string URL or pathname for the repository.
-      -- @param lua_version string Lua version in "5.x" format, defaults to installed version.
-      -- @return table or (nil, string, [string]) A table representing the manifest,
-      -- or nil followed by an error message and an optional error code.
-      function manif.load_manifest(repo_url, lua_version)
-         -- code
-      end
-      ```
-
-   * 주석에 TODO 및 FIXME 태그를 사용해 보세요. TODO는 나중에 구현될 누락된 기능을 나타냅니다. FIXME는 기존 코드의 문제점(비효율적인 구현, 버그, 불필요한 코드 등)을 나타냅니다.
-
-      ```lua
-      -- TODO: implement method
-      local function something()
-         -- FIXME: check conditions
-      end
-      ```
-
-   * 인라인 주석보다 `LDoc` 스타일의 주석이 많이 쓰입니다.
-
-## 변수 이름
-
-   * 한 글자로 된 변수 이름은 피해야 합니다.
-
-   * 변수이름 `i` 는 `for` 문에서 카운팅 변수로만 사용해야 합니다
-
-   * 키와 값을 가진 테이블을 순회할 때 `k` 및 `v` 보다 자세한 이름이 좋습니다
-
-   * 무시되거나 안쓰는 변수에는 `_` 를 사용하세요.
-
-      ```lua
-      for _, item in ipairs(items) do
-         do_something_with_item(item)
-      end
-      ```
-
-   * 변수 및 함수 이름은 주로 snake_case를 사용합니다.
-
-      ```lua
-      -- 나쁜예
-      local OBJEcttsssss = {}
-      local thisIsMyObject = {}
-      local c = function()
-         -- ...stuff...
-      end
-
-      -- 좋은예
-      local this_is_my_object = {}
-
-      local function do_that_thing()
-         -- ...stuff...
-      end
-      ```
-
-      > **해석:** 표준 라이브러리는 소문자 이름이 결합된 소문자 API를 사용하지만 더 복잡한 API에서는 확장성이 좋지 않습니다. Snake_case는 표준 API와 함께 적절하게 보이는 경향이 있습니다.
-
-   * 객체 지향으로 코딩할 때 클래스는 CamelCase를 사용해야 합니다. 약어(예: XML)는 첫 번째 문자(XmlDocument)만 대문자여야 합니다. 메소드는 snake_case를 사용합니다.
-
-      ```lua
-      for _, name in pairs(names) do
-         -- ...stuff...
-      end
-      ```
-
-   * `factory`에는 파스칼 케이스를 사용합니다
-
-      ```lua
-      -- bad
-      local player = require('player')
-
-      -- good
-      local Player = require('player')
-      local me = Player({ name = 'Jack' })
-      ```
-
-   * `boolean` 값을 리턴 하는 함수는 is_ 사용을 선호합니다.
-
-      ```lua
-      -- 나쁜예
-      local function evil(alignment)
-         return alignment < 100
-      end
-
-      -- 좋은예
-      local function is_evil(alignment)
-         return alignment < 100
-      end
-      ```
-
-   * `UPPER_CASE` 오직 상수만 사용합니다
-
-   * `_` 로 시작하는 대문자 이름을 사용하지 마세요. lua의 예약어 규칙입니다
-
-## 테이블
-
-   * 테이블을 생성할 때 가능하면 해당 필드를 한 번에 모두 채우는 것이 좋습니다
-
-      ```lua
-      local player = {
-         name = "Jack",
-         class = "Rogue",
-      }
-      ```
-
-   * 가능한 위와 같은 구문을 사용하고, 식별자로 표현할 수 없는 이름을 사용할 때는 ["key"] 구문을 사용합니다, 선언시 이 두 표기법이 겹치는 것은 피해주세요
-
-
-      ```lua
-      table = {
-         ["1394-E"] = val1,
-         ["UTF-8"] = val2,
-         ["and"] = val2,
-      }
-      ```
-
-## 문자열
-
-   * 문자열에 "큰따옴표"를 사용하세요. 큰따옴표가 포함된 문자열을 작성할 때는 '작은따옴표'를 사용하세요.
-
-      ```lua
-      local name = "NekoLand"
-      local sentence = 'The name of the program is "NekoLand"'
-      ```
-
-   * 80자가 넘어가는 문자열의 경우 연결 연산자 `..` 를 써야합니다
-
-      ```lua
-      -- bad
-      local errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.'
-
-      -- bad
-      local errorMessage = 'This is a super long error that \
-      was thrown because of Batman. \
-      When you stop to think about \
-      how Batman had anything to do \
-      with this, you would get nowhere \
-      fast.'
-
-
-      -- bad
-      local errorMessage = [[This is a super long error that
-      was thrown because of Batman.
-      When you stop to think about
-      how Batman had anything to do
-      with this, you would get nowhere
-      fast.]]
-
-      -- good
-      local errorMessage = 'This is a super long error that ' ..
-      'was thrown because of Batman. ' ..
-      'When you stop to think about ' ..
-      'how Batman had anything to do ' ..
-      'with this, you would get nowhere ' ..
-      'fast.'
-      ```
-
-      > **해석:** 큰 따옴표는 많은 언어에서 문자열 구분 기호로 사용됩니다. 작은 따옴표는 이스케이프를 방지하는 데 유용합니다.
-
-## 줄 길이
-
-   * 줄 길이에는 제한이 없습니다. 줄 길이는 한 줄에 하나의 명령문을 사용하여 자연스럽게 제한됩니다. 한 줄의 코드가 너무 긴 경우 (예: 256자 이상의 줄을 생성하는 표현식) 분리 하는 것이 좋습니다
-
-## 함수
-
-   * [작은 함수를 써야하는 이유](http://kiki.to/blog/2012/03/16/small-functions-are-good-for-the-universe/)
-
-   * 변수형 선언 보다 함수형 선언이 좋습니다. 이렇게 하면 익명 함수를 구분하는 데 도움이 됩니다
-
-      ```lua
-      -- 나쁜예
-      local nope = function(name, options)
-         -- ...stuff...
-      end
-
-      -- 좋은예
-      local function yup(name, options)
-         -- ...stuff...
-      end
-      ```
-
-   * 루아 함수의 유효성 검사는 최대한 빨리 검사하고 값 또한 되도록 빨리 반환시켜주는 것이 좋습니다
-
-      ```lua
-      -- 나쁜예
-      local function is_good_name(name, options, arg)
-         local is_good = #name > 3
-         is_good = is_good and #name < 30
-
-         -- ...stuff...
-
-         return is_good
-      end
-
-      -- 좋은예
-      local function is_good_name(name, options, args)
-         if #name < 3 or #name > 30 then
-            return false
-         end
-
-         -- ...stuff...
-
-         return true
-      end
-      ```
-
-## 함수 호출
-
-   * 함수 호출시 문자열 인수가 1개라면 괄호를 생략 가능 하지만 되도록 하지 않습니다
-
-      ```lua
-      -- 나쁜예
-      local data = get_data"KRP"..tostring(area_number)
-
-      -- 좋은예
-      local data = get_data("KRP"..tostring(area_number))
-      local data = get_data("KRP")..tostring(area_number)
-      ```
-
-   * 함수 인자로 테이블 을 1개만 받을 경우 괄호를 생략합니다
-
-      ```lua
-      local an_instance = a_module.new {
-         a_parameter = 42,
-         another_parameter = "yay",
-      }
-      ```
-
-      > **해석:** 위와 같이 한 개의 테이블을 인자로 받는 경우는 `우선 순위 문제` 가 발생하지 않습니다
-
-## 테이블 속성
-
-   * 이미 알고 있는 테이블 값에 접근 할 때에는 `.` 표기법을 사용합니다
-
-      ```lua
-      local luke = {
-         jedi = true,
-         age = 28,
-      }
-
-      -- 나쁜예
-      local is_jedi = luke["jedi"]
-
-      -- 좋은예
-      local is_jedi = luke.jedi
-      ```
-
-   * 변수가 있는 속성에 액세스하거나 테이블을 `list` 로 사용하는 경우 대괄호 표기법 `[]` 을 사용합니다.
-
-      ```lua
-      local vehicles = load_vehicles_from_disk("vehicles.dat")
-
-      if vehicles["Porsche"] then
-         porsche_handler(vehicles["Porsche"])
-         vehicles["Porsche"] = nil
-      end
-      for name, cars in pairs(vehicles) do
-         regular_handler(cars)
-      end
-      ```
-
-## 테이블 안의 함수
-
-   * 모듈 및 클래스를 선언할 때 테이블 외부에 함수를 선언합니다
-
-      ```lua
-      -- 나쁜예
-      local my_module = {
-         a = function(x)
-         -- code
-         end
-      }
-
-      -- 좋은예
-      local my_module = {}
-
-      function my_module.a(x)
-         -- code
-      end
-      ```
-
-   * 메타 테이블을 선언할 때 테이블 정의 내부에 함수를 선언합니다
-
-      ```lua
-      -- 좋은예
-      local version_mt = {
-         __eq = function(a, b)
-            -- code
-         end,
-         __lt = function(a, b)
-            -- code
-         end,
-      }
-
-      version_mt.method1 = function()
-         -- code
-      end
-      ```
-
-## 변수 선언
-
-   * 변수를 선언할 때는 항상 `local` 키워드를 사용하세요.
-
-      ```lua
-      -- 나쁜예
-      superpower = get_superpower()
-
-      -- 좋은예
-      local superpower = get_superpower()
-      ```
-
-      > **해석:** 전역 공간의 오염을 피하기 위한 방법입니다
-
-
-# 변수 스코프
-
-   * 가능한 가장 작은 범위 단위로 변수를 할당하세요
-
-   * 가능한 경우 해당 범위의 맨 위에 변수를 할당합니다. 이렇게 하면 기존 변수를 더 쉽게 확인할 수 있습니다.
-
-      ```lua
-      -- 나쁜예
-      local bad = function()
-         
-         -- ...굉장히 긴 코드 ...
-
-         -- ... 다른 긴 코드 ...
-
-         local name = get_name()
-
-         if name == "test" then
-            return false
-         end
-
-         return name
-      end
-
-      -- 좋은예
-      local function good()
-         local name = get_name()
-
-         -- ...굉장히 긴 코드 ...
-
-         -- ... 다른 긴 코드 ...
-
-         if name == "test" then
-            return false
-         end
-
-         return name
-      end
-      ```
-
-      > **해석:** Lua에는 적절한 렉시컬 스코프가 있습니다. 변수의 범위가 좁을 수록 이펙트를 확인하기 쉬워집니다
-
-## 조건식
-
-   * `False` 및 `nil` 은 조건식에서 거짓입니다. `false` 와 `nil` 의 차이를 알아야 하는 경우가 아니면 아래와 같은 방법이 좋습니다
-
-   * `nil` 과 `false` 의 차이에 의존하는 API를 설계하지 마세요
-
-      ```lua
-      -- 나쁜예
-      if name ~= nil then
-         -- ...stuff...
-      end
-
-      -- 좋은예
-      if name then
-         -- ...stuff...
-      end
-      ```
-
-   * 대부분의 조건식에서는 `false` 보다 `true` 를 확인하는 것이 좋습니다
-
-      ```lua
-      -- 나쁜예
-      if not thing then
-      -- ...stuff...
-      else
-      -- ...stuff...
-      end
-
-      -- 좋은예
-      if thing then
-      -- ...stuff...
-      else
-      -- ...stuff...
-      end
-      ```
-
-   * 리턴 값으로 `nil` 을 내뱉는 함수 디자인을 피해주세요
-
-   * 삼항 연산자로 `nil` 리턴을 막을수 있다면 사용하는 것이 좋습니다
-
-      ```lua
-      local function default_name(name)
-         -- return the default "Waldo" if name is nil
-         return name or "Waldo"
-      end
-
-      local function brew_coffee(machine)
-         return (machine and machine.is_loaded) and "coffee brewing" or "fill your water"
-      end
-      ```
-
-   * `else` 문 을 자제해 주세요. 변수 재할당을 막고, 코드를 간결하게 만들어줍니다
-
-      ```lua
-      -- 나쁜예
-      local function full_name(first, last)
-      local name
-
-      if first and last then
-         name = first .. ' ' .. last
-      else
-         name = 'John Smith'
-      end
-
-      return name
-      end
-
-      -- 좋은예
-      local function full_name(first, last)
-      local name = 'John Smith'
-
-      if first and last then
-         name = first .. ' ' .. last
-      end
-
-      return name
-      end
-      ```
-
-## 블록
-
-   * `then break`, `break`, `return`, `람다식` 에만 한줄 블록을 사용합니다
-
-      ```lua
-      -- 좋은예
-      if test then break end
-
-      -- 좋은예
-      if not ok then return nil, "this failed for this reason: " .. reason end
-
-      -- 좋은예
-      use_callback(x, function(k) return k.last end)
-
-      -- 좋은예
-      if test then
-      return false
-      end
-
-      -- 나쁜예
-      if test < 1 and do_complicated_function(test) == false or seven == 8 and nine == 10 then do_other_complicated_function() end
-
-      -- 좋은예
-      if test < 1 and do_complicated_function(test) == false or seven == 8 and nine == 10 then
-         do_other_complicated_function() 
-         return false 
-      end
-      ```
-
-   * 문장을 여러 줄로 분리하세요. 구분자로 세미콜론을 사용하지 마세요
-
-      ```lua
-      -- 나쁜예
-      local whatever = "sure";
-      a = 1; b = 2
-
-      -- 좋은예
-      local whatever = "sure"
-      a = 1
-      b = 2
-      ```
-
-## 주석 스페이싱
-
+   
+   
    * `--` 뒤에 스페이스를 사용합니다
 
       ```lua
@@ -638,7 +159,529 @@
       sys_command(form, UI_FORM_UPDATE_NODE, "sample", FORM_NODE_VISIBLE, false)
       ```
 
-## 타입 검사
+## <a name='annotation'>주석</a>
+
+   * [LDoc](https://stevedonovan.github.io/ldoc/) 스타일을 사용하여 문서화합니다. 각 매개변수 또는 반환 값 뒤에 입력 정보를 지정하는 것이 좋습니다.
+
+      ```lua
+      --- Load a local or remote manifest describing a repository.
+      -- All functions that use manifest tables assume they were obtained
+      -- through either this function or load_local_manifest.
+      -- @param repo_url string URL or pathname for the repository.
+      -- @param lua_version string Lua version in "5.x" format, defaults to installed version.
+      -- @return table or (nil, string, [string]) A table representing the manifest,
+      -- or nil followed by an error message and an optional error code.
+      function manif.load_manifest(repo_url, lua_version)
+         -- code
+      end
+      ```
+
+   * 주석에 TODO 및 FIXME 태그를 사용해 보세요. TODO는 나중에 구현될 누락된 기능을 나타냅니다. FIXME는 기존 코드의 문제점(비효율적인 구현, 버그, 불필요한 코드 등)을 나타냅니다.
+
+      ```lua
+      -- TODO: implement method
+      local function something()
+         -- FIXME: check conditions
+      end
+      ```
+
+   * 인라인 주석보다 `LDoc` 스타일의 주석이 많이 쓰입니다.
+
+## <a name='types'>루아타입</a>
+
+  - **기본 유형**: 기본 유형에 액세스하면 해당 값에 대해 직접 대입합니다
+
+    + `string`
+    + `number`
+    + `boolean`
+    + `nil`
+
+      ```lua
+      local foo = 1
+      local bar = foo
+
+      bar = 9
+
+      print(foo, bar) -- => 1	9
+      ```
+
+  - **복합유형**: 복합 유형에 액세스할 때 해당 값에 대한 참조 작업을 수행합니다.
+
+    + `table`
+    + `function`
+    + `userdata`
+
+      ```lua
+      local foo = { 1, 2 }
+      local bar = foo
+
+      bar[0] = 9
+      foo[1] = 3
+
+      print(foo[0], bar[0]) -- => 9   9
+      print(foo[1], bar[1]) -- => 3   3
+      print(foo[2], bar[2]) -- => 2   2		
+      ```
+
+
+
+
+
+
+
+
+## <a name='tables'>테이블</a>
+
+   * 테이블을 생성할 때 가능하면 해당 필드를 한 번에 모두 채우는 것이 좋습니다
+
+      ```lua
+      local player = {
+         name = "Jack",
+         class = "Rogue",
+      }
+      ```
+
+   * 가능한 위와 같은 구문을 사용하고, 식별자로 표현할 수 없는 이름을 사용할 때는 ["key"] 구문을 사용합니다, 선언시 이 두 표기법이 겹치는 것은 피해주세요
+
+
+      ```lua
+      table = {
+         ["1394-E"] = val1,
+         ["UTF-8"] = val2,
+         ["and"] = val2,
+      }
+      ```
+
+   * 이미 알고 있는 테이블 값에 접근 할 때에는 `.` 표기법을 사용합니다
+
+      ```lua
+      local luke = {
+         jedi = true,
+         age = 28,
+      }
+
+      -- 나쁜예
+      local is_jedi = luke["jedi"]
+
+      -- 좋은예
+      local is_jedi = luke.jedi
+      ```
+
+   * 변수가 있는 속성에 액세스하거나 테이블을 `list` 로 사용하는 경우 대괄호 표기법 `[]` 을 사용합니다.
+
+      ```lua
+      local vehicles = load_vehicles_from_disk("vehicles.dat")
+
+      if vehicles["Porsche"] then
+         porsche_handler(vehicles["Porsche"])
+         vehicles["Porsche"] = nil
+      end
+      for name, cars in pairs(vehicles) do
+         regular_handler(cars)
+      end
+      ```
+
+## <a name='strings'>문자열</a>
+
+   * 문자열에 "큰따옴표"를 사용하세요. 큰따옴표가 포함된 문자열을 작성할 때는 '작은따옴표'를 사용하세요.
+
+      ```lua
+      local name = "NekoLand"
+      local sentence = 'The name of the program is "NekoLand"'
+      ```
+
+   * 80자가 넘어가는 문자열의 경우 연결 연산자 `..` 를 써야합니다
+
+      ```lua
+      -- bad
+      local errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.'
+
+      -- bad
+      local errorMessage = 'This is a super long error that \
+      was thrown because of Batman. \
+      When you stop to think about \
+      how Batman had anything to do \
+      with this, you would get nowhere \
+      fast.'
+
+
+      -- bad
+      local errorMessage = [[This is a super long error that
+      was thrown because of Batman.
+      When you stop to think about
+      how Batman had anything to do
+      with this, you would get nowhere
+      fast.]]
+
+      -- good
+      local errorMessage = 'This is a super long error that ' ..
+      'was thrown because of Batman. ' ..
+      'When you stop to think about ' ..
+      'how Batman had anything to do ' ..
+      'with this, you would get nowhere ' ..
+      'fast.'
+      ```
+
+      > **해석:** 큰 따옴표는 많은 언어에서 문자열 구분 기호로 사용됩니다. 작은 따옴표는 이스케이프를 방지하는 데 유용합니다.
+
+
+
+## <a name='functions'>함수</a>
+
+   * [작은 함수를 써야하는 이유](http://kiki.to/blog/2012/03/16/small-functions-are-good-for-the-universe/)
+
+   * 변수형 선언 보다 함수형 선언이 좋습니다. 이렇게 하면 익명 함수를 구분하는 데 도움이 됩니다
+
+      ```lua
+      -- 나쁜예
+      local nope = function(name, options)
+         -- ...stuff...
+      end
+
+      -- 좋은예
+      local function yup(name, options)
+         -- ...stuff...
+      end
+      ```
+
+   * 루아 함수의 유효성 검사는 최대한 빨리 검사하고 값 또한 되도록 빨리 반환시켜주는 것이 좋습니다
+
+      ```lua
+      -- 나쁜예
+      local function is_good_name(name, options, arg)
+         local is_good = #name > 3
+         is_good = is_good and #name < 30
+
+         -- ...stuff...
+
+         return is_good
+      end
+
+      -- 좋은예
+      local function is_good_name(name, options, args)
+         if #name < 3 or #name > 30 then
+            return false
+         end
+
+         -- ...stuff...
+
+         return true
+      end
+      ```
+
+   * 함수 호출시 문자열 인수가 1개라면 괄호를 생략 가능 하지만 되도록 하지 않습니다
+
+      ```lua
+      -- 나쁜예
+      local data = get_data"KRP"..tostring(area_number)
+
+      -- 좋은예
+      local data = get_data("KRP"..tostring(area_number))
+      local data = get_data("KRP")..tostring(area_number)
+      ```
+
+   * 함수 인자로 테이블 을 1개만 받을 경우 괄호를 생략합니다
+
+      ```lua
+      local an_instance = a_module.new {
+         a_parameter = 42,
+         another_parameter = "yay",
+      }
+      ```
+
+      > **해석:** 위와 같이 한 개의 테이블을 인자로 받는 경우는 `우선 순위 문제` 가 발생하지 않습니다
+
+   * 모듈 및 클래스를 선언할 때 테이블 외부에 함수를 선언합니다
+
+      ```lua
+      -- 나쁜예
+      local my_module = {
+         a = function(x)
+         -- code
+         end
+      }
+
+      -- 좋은예
+      local my_module = {}
+
+      function my_module.a(x)
+         -- code
+      end
+      ```
+
+   * 메타 테이블을 선언할 때 테이블 정의 내부에 함수를 선언합니다
+
+      ```lua
+      -- 좋은예
+      local version_mt = {
+         __eq = function(a, b)
+            -- code
+         end,
+         __lt = function(a, b)
+            -- code
+         end,
+      }
+
+      version_mt.method1 = function()
+         -- code
+      end
+      ```
+
+   
+
+
+
+
+## <a name='variables'>변수</a>
+
+   * 한 글자로 된 변수 이름은 피해야 합니다.
+
+   * 변수이름 `i` 는 `for` 문에서 카운팅 변수로만 사용해야 합니다
+
+   * 키와 값을 가진 테이블을 순회할 때 `k` 및 `v` 보다 자세한 이름이 좋습니다
+
+   * 무시되거나 안쓰는 변수에는 `_` 를 사용하세요.
+
+      ```lua
+      for _, item in ipairs(items) do
+         do_something_with_item(item)
+      end
+      ```
+
+   * 변수 및 함수 이름은 주로 snake_case를 사용합니다.
+
+      ```lua
+      -- 나쁜예
+      local OBJEcttsssss = {}
+      local thisIsMyObject = {}
+      local c = function()
+         -- ...stuff...
+      end
+
+      -- 좋은예
+      local this_is_my_object = {}
+
+      local function do_that_thing()
+         -- ...stuff...
+      end
+      ```
+
+      > **해석:** 표준 라이브러리는 소문자 이름이 결합된 소문자 API를 사용하지만 더 복잡한 API에서는 확장성이 좋지 않습니다. Snake_case는 표준 API와 함께 적절하게 보이는 경향이 있습니다.
+
+   * 객체 지향으로 코딩할 때 클래스는 CamelCase를 사용해야 합니다. 약어(예: XML)는 첫 번째 문자(XmlDocument)만 대문자여야 합니다. 메소드는 snake_case를 사용합니다.
+
+      ```lua
+      for _, name in pairs(names) do
+         -- ...stuff...
+      end
+      ```
+
+   * `factory`에는 파스칼 케이스를 사용합니다
+
+      ```lua
+      -- bad
+      local player = require('player')
+
+      -- good
+      local Player = require('player')
+      local me = Player({ name = 'Jack' })
+      ```
+
+   * `boolean` 값을 리턴 하는 함수는 is_ 사용을 선호합니다.
+
+      ```lua
+      -- 나쁜예
+      local function evil(alignment)
+         return alignment < 100
+      end
+
+      -- 좋은예
+      local function is_evil(alignment)
+         return alignment < 100
+      end
+      ```
+
+   * `UPPER_CASE` 오직 상수만 사용합니다
+
+   * `_` 로 시작하는 대문자 이름을 사용하지 마세요. lua의 예약어 규칙입니다
+
+   * 변수를 선언할 때는 항상 `local` 키워드를 사용하세요.
+
+      ```lua
+      -- 나쁜예
+      superpower = get_superpower()
+
+      -- 좋은예
+      local superpower = get_superpower()
+      ```
+
+      > **해석:** 전역 공간의 오염을 피하기 위한 방법입니다
+
+   * 가능한 가장 작은 범위 단위로 변수를 할당하세요
+
+   * 가능한 경우 해당 범위의 맨 위에 변수를 할당합니다. 이렇게 하면 기존 변수를 더 쉽게 확인할 수 있습니다.
+
+      ```lua
+      -- 나쁜예
+      local bad = function()
+         
+         -- ...굉장히 긴 코드 ...
+
+         -- ... 다른 긴 코드 ...
+
+         local name = get_name()
+
+         if name == "test" then
+            return false
+         end
+
+         return name
+      end
+
+      -- 좋은예
+      local function good()
+         local name = get_name()
+
+         -- ...굉장히 긴 코드 ...
+
+         -- ... 다른 긴 코드 ...
+
+         if name == "test" then
+            return false
+         end
+
+         return name
+      end
+      ```
+
+      > **해석:** Lua에는 적절한 렉시컬 스코프가 있습니다. 변수의 범위가 좁을 수록 이펙트를 확인하기 쉬워집니다
+
+## <a name='conditions'>조건식</a>
+
+   * `False` 및 `nil` 은 조건식에서 거짓입니다. `false` 와 `nil` 의 차이를 알아야 하는 경우가 아니면 아래와 같은 방법이 좋습니다
+
+   * `nil` 과 `false` 의 차이에 의존하는 API를 설계하지 마세요
+
+      ```lua
+      -- 나쁜예
+      if name ~= nil then
+         -- ...stuff...
+      end
+
+      -- 좋은예
+      if name then
+         -- ...stuff...
+      end
+      ```
+
+   * 대부분의 조건식에서는 `false` 보다 `true` 를 확인하는 것이 좋습니다
+
+      ```lua
+      -- 나쁜예
+      if not thing then
+      -- ...stuff...
+      else
+      -- ...stuff...
+      end
+
+      -- 좋은예
+      if thing then
+      -- ...stuff...
+      else
+      -- ...stuff...
+      end
+      ```
+
+   * 리턴 값으로 `nil` 을 내뱉는 함수 디자인을 피해주세요
+
+   * 삼항 연산자로 `nil` 리턴을 막을수 있다면 사용하는 것이 좋습니다
+
+      ```lua
+      local function default_name(name)
+         -- return the default "Waldo" if name is nil
+         return name or "Waldo"
+      end
+
+      local function brew_coffee(machine)
+         return (machine and machine.is_loaded) and "coffee brewing" or "fill your water"
+      end
+      ```
+
+   * `else` 문 을 자제해 주세요. 변수 재할당을 막고, 코드를 간결하게 만들어줍니다
+
+      ```lua
+      -- 나쁜예
+      local function full_name(first, last)
+      local name
+
+      if first and last then
+         name = first .. ' ' .. last
+      else
+         name = 'John Smith'
+      end
+
+      return name
+      end
+
+      -- 좋은예
+      local function full_name(first, last)
+      local name = 'John Smith'
+
+      if first and last then
+         name = first .. ' ' .. last
+      end
+
+      return name
+      end
+      ```
+
+
+
+## <a name='blocks'>블록</a>
+
+   * 줄 길이에는 제한이 없습니다. 줄 길이는 한 줄에 하나의 명령문을 사용하여 자연스럽게 제한됩니다. 한 줄의 코드가 너무 긴 경우 (예: 256자 이상의 줄을 생성하는 표현식) 분리 하는 것이 좋습니다
+
+   * `then break`, `break`, `return`, `람다식` 에만 한줄 블록을 사용합니다
+
+      ```lua
+      -- 좋은예
+      if test then break end
+
+      -- 좋은예
+      if not ok then return nil, "this failed for this reason: " .. reason end
+
+      -- 좋은예
+      use_callback(x, function(k) return k.last end)
+
+      -- 좋은예
+      if test then
+      return false
+      end
+
+      -- 나쁜예
+      if test < 1 and do_complicated_function(test) == false or seven == 8 and nine == 10 then do_other_complicated_function() end
+
+      -- 좋은예
+      if test < 1 and do_complicated_function(test) == false or seven == 8 and nine == 10 then
+         do_other_complicated_function() 
+         return false 
+      end
+      ```
+
+   * 문장을 여러 줄로 분리하세요. 구분자로 세미콜론을 사용하지 마세요
+
+      ```lua
+      -- 나쁜예
+      local whatever = "sure";
+      a = 1; b = 2
+
+      -- 좋은예
+      local whatever = "sure"
+      a = 1
+      b = 2
+      ```
+
+## <a name='type-casting'>타입 검사</a>
 
    * 성능이 중요하지 않은 코드에서는 `assert()` 함수를 통한 형식검사가 좋습니다
 
@@ -661,13 +704,7 @@
       local total_score = tostring(review_score)
       ```
 
-## 에러
-
-   * 실패할 수 있는 함수(예: `I/O` )는 오류 시 `nil` 및 문자열로 된 오류 메시지를 반환해야 하며, 그 뒤에 오류 코드와 같은 다른 반환 값이 올 수 있습니다.
-
-   * API 오용과 같은 오류가 발생하면 `error()` 또는 `assert()` 와 함께 오류가 발생해야 합니다.
-
-## 모듈
+## <a name='modules'>모듈</a>
 
    [모듈 작성 지침](http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/)
 
@@ -748,7 +785,7 @@
 
       > **해석:** 이것은 require가 키워드가 아니라 함수 호출이라는 것을 명시적으로 만듭니다. 다른 많은 언어는 이 목적을 위해 키워드를 사용하므로 require에 "특별한 구문"을 사용하면 Lua를 처음 접하는 사람들을 곤경에 빠뜨릴 수 있습니다.
 
-## 객체 지향
+## <a name='oop'>객체 지향</a>
 
    * 다음과 같은 방법으로 클래스를 만듭니다.
 
@@ -798,17 +835,13 @@
 
       > **해석:** 가비지 수집기는 메모리만 처리하는 자동 메모리 관리를 수행합니다. 가비지 수집기가 언제 호출되는지에 대한 보장은 없으며 메모리 압력은 다른 리소스에 대한 압력과 상관 관계가 없습니다.
 
-## 파일 구조
 
-   * Lua 파일의 이름은 모두 소문자로 지정해야 합니다.
 
-   * Lua 파일은 최상위 src 디렉토리에 있어야 합니다. 메인 라이브러리 파일은 modulename.lua라고 해야 합니다.
+## <a name = 'testing'>테스팅</a>
 
-   * 테스트는 최상위 사양 디렉토리에 있어야 합니다. LuaRocks는 테스트를 위해 [Busted](http://olivinelabs.com/busted/)를 사용합니다.
+   * 실패할 수 있는 함수(예: `I/O` )는 오류 시 `nil` 및 문자열로 된 오류 메시지를 반환해야 하며, 그 뒤에 오류 코드와 같은 다른 반환 값이 올 수 있습니다.
 
-   * 실행 파일은 src/bin 디렉토리에 있어야 합니다.
-
-## 정적 검사
+   * API 오용과 같은 오류가 발생하면 `error()` 또는 `assert()` 와 함께 오류가 발생해야 합니다.
 
    * 루아 코드가 [luacheck](https://github.com/mpeterv/luacheck)를 통과하는 것이 가장 좋습니다
 
@@ -830,4 +863,25 @@
       end
       ```
 
+## <a name='files'>파일 구조</a>
 
+   * Lua 파일의 이름은 모두 소문자로 지정해야 합니다.
+
+   * Lua 파일은 최상위 src 디렉토리에 있어야 합니다. 메인 라이브러리 파일은 modulename.lua라고 해야 합니다.
+
+   * 테스트는 최상위 사양 디렉토리에 있어야 합니다. LuaRocks는 테스트를 위해 [Busted](http://olivinelabs.com/busted/)를 사용합니다.
+
+   * 실행 파일은 src/bin 디렉토리에 있어야 합니다.
+
+
+   
+
+
+## <a name='lists'>참고 목록</a>
+
+   * https://github.com/luarocks/lua-style-guide
+   * https://github.com/Olivine-Labs/lua-style-guide/
+   * https://github.com/zaki/lua-style-guide
+   * http://lua-users.org/wiki/LuaStyleGuide
+   * http://sputnik.freewisdom.org/en/Coding_Standard
+   * https://gist.github.com/catwell/b3c01dbea413aa78675740546dfd5ce2
