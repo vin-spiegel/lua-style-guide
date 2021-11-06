@@ -3,8 +3,9 @@
 
 이 스타일 가이드는 [LuaRocks](http://github.com/luarocks/luarocks) 프로젝트에서 사용되는 코딩 규칙을 나열합니다. 
 
-참고한 목록 입니다
+참고 목록
 
+* https://github.com/luarocks/lua-style-guide
 * https://github.com/Olivine-Labs/lua-style-guide/
 * https://github.com/zaki/lua-style-guide
 * http://lua-users.org/wiki/LuaStyleGuide
