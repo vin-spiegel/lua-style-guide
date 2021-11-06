@@ -13,7 +13,7 @@
 
 ## 들여쓰기 및 서식
 
-* LuaRocks 는 3개의 공백으로 들여쓰기 합니다
+* LuaRocks 스타일 에서는 3개의 공백으로 들여쓰기 합니다
 
 ```lua
 for i, pkg in ipairs(packages) do
@@ -35,9 +35,9 @@ end
 --- Load a local or remote manifest describing a repository.
 -- All functions that use manifest tables assume they were obtained
 -- through either this function or load_local_manifest.
--- @param repo_url string: URL or pathname for the repository.
--- @param lua_version string: Lua version in "5.x" format, defaults to installed version.
--- @return table or (nil, string, [string]): A table representing the manifest,
+-- @param repo_url string URL or pathname for the repository.
+-- @param lua_version string Lua version in "5.x" format, defaults to installed version.
+-- @return table or (nil, string, [string]) A table representing the manifest,
 -- or nil followed by an error message and an optional error code.
 function manif.load_manifest(repo_url, lua_version)
    -- code
@@ -53,18 +53,17 @@ local function something()
 end
 ```
 
-* 인라인 주석보다 LDoc 스타일의 주석이 많이 쓰입니다.
+* 인라인 주석보다 `LDoc` 스타일의 주석이 많이 쓰입니다.
 
 ## 변수 이름
 
 * 한 글자로 된 변수 이름은 피해야 합니다.
 
-* `i` 는 for 루프에서 카운터 변수로만 사용해야 합니다(숫자
-또는 'ipairs').
+* 변수이름 `i` 는 `for` 문에서 카운팅 변수로만 사용해야 합니다
 
-* 키와 값을 가진 테이블을 순회할 때 k 및 v보다 더 자세한 이름이 좋습니다.
+* 키와 값을 가진 테이블을 순회할 때 `k` 및 `v` 보다 자세한 이름이 좋습니다
 
-* 안쓰는 변수에는 `_` 를 사용하세요.
+* 무시되거나 안쓰는 변수에는 `_` 를 사용하세요.
 
 ```lua
 for _, item in ipairs(items) do
@@ -75,14 +74,14 @@ end
 * 변수 및 함수 이름은 주로 snake_case를 사용합니다.
 
 ```lua
--- bad
+-- 나쁜예
 local OBJEcttsssss = {}
 local thisIsMyObject = {}
 local c = function()
    -- ...stuff...
 end
 
--- good
+-- 좋은예
 local this_is_my_object = {}
 
 local function do_that_thing()
@@ -103,12 +102,12 @@ end
 * `boolean` 값을 리턴 하는 함수는 is_ 사용을 선호합니다.
 
 ```lua
--- bad
+-- 나쁜예
 local function evil(alignment)
    return alignment < 100
 end
 
--- good
+-- 좋은예
 local function is_evil(alignment)
    return alignment < 100
 end
@@ -116,7 +115,7 @@ end
 
 * `UPPER_CASE` 오직 상수만 사용합니다
 
-* `_` 로 시작하는 대문자 이름을 사용하지 마세요. lua의 예약어 입니다
+* `_` 로 시작하는 대문자 이름을 사용하지 마세요. lua의 예약어 규칙입니다
 
 ## 테이블
 
@@ -129,7 +128,7 @@ local player = {
 }
 ```
 
-* 가능한 한 일반 키 구문을 사용하고, 식별자로 표현할 수 없는 이름을 사용할 때는 ["key"] 구문을 사용합니다, 선언시 이 두 표기법이 겹치는 것은 피해주세요
+* 가능한 위와 같은 구문을 사용하고, 식별자로 표현할 수 없는 이름을 사용할 때는 ["key"] 구문을 사용합니다, 선언시 이 두 표기법이 겹치는 것은 피해주세요
 
 
 ```lua
@@ -142,7 +141,7 @@ table = {
 
 ## 문자열
 
-* 문자열에 "큰따옴표"를 사용하십시오. 큰따옴표가 포함된 문자열을 작성할 때는 '작은따옴표'를 사용하세요.
+* 문자열에 "큰따옴표"를 사용하세요. 큰따옴표가 포함된 문자열을 작성할 때는 '작은따옴표'를 사용하세요.
 
 ```lua
 local name = "LuaRocks"
@@ -151,21 +150,21 @@ local sentence = 'The name of the program is "LuaRocks"'
 
 > **해석:** 큰 따옴표는 많은 수의 프로그래밍 언어에서 문자열 구분 기호로 사용됩니다. 작은 따옴표는 이스케이프를 방지하는 데 유용합니다.
 
-## Line lengths
+## 줄 길이
 
-* 선 길이에는 제한이 없습니다. 줄 길이는 한 줄에 하나의 명령문을 사용하여 자연스럽게 제한됩니다. 여전히 너무 긴 줄이 생성되는 경우(예: 256자 이상의 줄을 생성하는 표현식) 이는 표현식이 너무 복잡하고 합리적인 이름을 가진 하위 표현식으로 분할하는 것이 더 낫다는 것을 의미합니다.
+* 줄 길이에는 제한이 없습니다. 줄 길이는 한 줄에 하나의 명령문을 사용하여 자연스럽게 제한됩니다. 여전히 너무 긴 줄이 생성되는 경우(예: 256자 이상의 줄을 생성하는 표현식) 이는 표현식이 너무 복잡하고 합리적인 이름을 가진 하위 표현식으로 분할하는 것이 더 낫다는 것을 의미합니다.
 
 ## 함수 선언
 
-* 변수 구문보다 함수 구문이 좋습니다. 이렇게 하면 익명 함수를 구분하는 데 도움이 됩니다
+* 변수형 선언 보다 함수 구문이 좋습니다. 이렇게 하면 익명 함수를 구분하는 데 도움이 됩니다
 
 ```lua
--- bad
+-- 나쁜예
 local nope = function(name, options)
    -- ...stuff...
 end
 
--- good
+-- 좋은예
 local function yup(name, options)
    -- ...stuff...
 end
@@ -174,18 +173,18 @@ end
 * 유효성은 빨리 검사하고 값 또한 되도록 빨리 반환시켜주는 것이 좋습니다
 
 ```lua
--- bad
-local function is_good_name(name, options, arg)
-   local is_good = #name > 3
-   is_good = is_good and #name < 30
+-- 나쁜예
+local function is_좋은예_name(name, options, arg)
+   local is_좋은예 = #name > 3
+   is_좋은예 = is_좋은예 and #name < 30
 
    -- ...stuff...
 
-   return is_good
+   return is_좋은예
 end
 
--- good
-local function is_good_name(name, options, args)
+-- 좋은예
+local function is_좋은예_name(name, options, args)
    if #name < 3 or #name > 30 then
       return false
    end
@@ -201,14 +200,14 @@ end
 * 함수 호출시 문자열 인수가 1개라면 괄호를 생략 가능 하지만 되도록 하지 않습니다
 
 ```lua
--- bad
+-- 나쁜예
 local data = get_data"KRP"..tostring(area_number)
--- good
+-- 좋은예
 local data = get_data("KRP"..tostring(area_number))
 local data = get_data("KRP")..tostring(area_number)
 ```
 
-* 함수 인자로 테이블 을 1개만 받을 경우 괄호를 생략해도 됩니다
+* 함수 인자로 테이블 을 1개만 받을 경우 괄호를 생략합니다
 
 ```lua
 local an_instance = a_module.new {
@@ -217,7 +216,7 @@ local an_instance = a_module.new {
 }
 ```
 
-> **해석:** 위와 같은 경우는 우선순위 문제가 발생하지 않습니다
+> **해석:** 위와 같이 한 개의 테이블을 인자로 받는 경우는 우선순위 문제가 발생하지 않습니다
 
 ## 테이블 속성
 
@@ -229,14 +228,14 @@ local luke = {
    age = 28,
 }
 
--- bad
+-- 나쁜예
 local is_jedi = luke["jedi"]
 
--- good
+-- 좋은예
 local is_jedi = luke.jedi
 ```
 
-* 변수가 있는 속성에 액세스하거나 테이블을 목록으로 사용하는 경우 아래 첨자 표기법 `[]` 을 사용합니다.
+* 변수가 있는 속성에 액세스하거나 테이블을 목록으로 사용하는 경우 대괄호 표기법 `[]` 을 사용합니다.
 
 ```lua
 local vehicles = load_vehicles_from_disk("vehicles.dat")
@@ -255,9 +254,17 @@ end
 * 모듈 및 클래스를 선언할 때 테이블 외부에 함수를 선언합니다
 
 ```lua
+-- 나쁜예
+local my_module = {
+   a = function(x)
+   -- code
+   end
+}
+
+-- 좋은예
 local my_module = {}
 
-function my_module.a_function(x)
+function my_module.a(x)
    -- code
 end
 ```
@@ -277,13 +284,13 @@ local version_mt = {
 
 ## 변수 선언
 
-* 변수를 선언할 때는 항상 'local'을 사용하세요.
+* 변수를 선언할 때는 항상 `local` 을 사용하세요.
 
 ```lua
--- bad
+-- 나쁜예
 superpower = get_superpower()
 
--- good
+-- 좋은예
 local superpower = get_superpower()
 ```
 
@@ -295,8 +302,8 @@ local superpower = get_superpower()
 * 가능한 가장 작은 범위 단위로 변수를 할당하세요
 
 ```lua
--- bad
-local function good()
+-- 나쁜예
+local function 좋은예()
    local name = get_name()
 
    test()
@@ -311,8 +318,8 @@ local function good()
    return name
 end
 
--- good
-local bad = function()
+-- 좋은예
+local 나쁜예 = function()
    test()
    print("doing stuff..")
 
@@ -336,12 +343,12 @@ end
 
 
 ```lua
--- bad
+-- 나쁜예
 if name ~= nil then
    -- ...stuff...
 end
 
--- good
+-- 좋은예
 if name then
    -- ...stuff...
 end
@@ -363,31 +370,31 @@ local function brew_coffee(machine)
 end
 ```
 
- * 리턴 값으로 nil을 내뱉는것은 피해주세요
+ * 리턴 값으로 `nil` 을 내뱉는 함수 디자인을 피해주세요
 
-## Blocks
+## 블록
 
 * `then break`, `break`, `return`, `람다식` 에만 한줄 블록을 사용합니다
 
 ```lua
--- good
+-- 좋은예
 if test then break end
 
--- good
+-- 좋은예
 if not ok then return nil, "this failed for this reason: " .. reason end
 
--- good
+-- 좋은예
 use_callback(x, function(k) return k.last end)
 
--- good
+-- 좋은예
 if test then
   return false
 end
 
--- bad
+-- 나쁜예
 if test < 1 and do_complicated_function(test) == false or seven == 8 and nine == 10 then do_other_complicated_function() end
 
--- good
+-- 좋은예
 if test < 1 and do_complicated_function(test) == false or seven == 8 and nine == 10 then
    do_other_complicated_function() 
    return false 
@@ -397,11 +404,11 @@ end
 * 문장을 여러 줄로 분리하세요. 구분자로 세미콜론을 사용하지 마세요
 
 ```lua
--- bad
+-- 나쁜예
 local whatever = "sure";
 a = 1; b = 2
 
--- good
+-- 좋은예
 local whatever = "sure"
 a = 1
 b = 2
@@ -412,14 +419,14 @@ b = 2
 * `--` 뒤에 스페이스를 사용합니다
 
 ```lua
---bad
--- good
+--나쁜예
+-- 좋은예
 ```
 
 * 항상 쉼표 뒤와 연산자와 기호 사이에 공백을 넣으세요
 
 ```lua
--- bad
+-- 나쁜예
 local x = y*9
 local numbers={1,2,3}
 numbers={1 , 2 , 3}
@@ -433,7 +440,7 @@ dog.set( "attr",{
   breed="Bernese Mountain Dog"
 })
 
--- good
+-- 좋은예
 local x = y * 9
 local numbers = {1, 2, 3}
 local strings = {
@@ -450,7 +457,7 @@ dog.set("attr", {
 * 구문이 아닌 줄의 시작을 기준으로 테이블과 함수를 들여씁니다
 
 ```lua
--- bad
+-- 나쁜예
 local my_table = {
                     "hello",
                     "world",
@@ -459,7 +466,7 @@ using_a_callback(x, function(...)
                        print("hello")
                     end)
 
--- good
+-- 좋은예
 local my_table = {
    "hello",
    "world",
@@ -479,12 +486,12 @@ local message = "Hello, "..user.."! This is your day # "..day.." in our platform
 * 선언이나 인수에서 함수 이름 뒤에 공백이 없어야 합니다.
 
 ```lua
--- bad
+-- 나쁜예
 local function hello ( name, language )
    -- code
 end
 
--- good
+-- 좋은예
 local function hello(name, language)
    -- code
 end
@@ -493,7 +500,7 @@ end
 * 함수 사이에는 빈 줄을 추가해주세요
 
 ```lua
--- bad
+-- 나쁜예
 local function foo()
    -- code
 end
@@ -501,7 +508,7 @@ local function bar()
    -- code
 end
 
--- good
+-- 좋은예
 local function foo()
    -- code
 end
@@ -514,11 +521,11 @@ end
 * 변수 선언을 정렬하지 마세요
 
 ```lua
--- bad
+-- 나쁜예
 local a               = 1
 local long_identifier = 2
 
--- good
+-- 좋은예
 local a = 1
 local long_identifier = 2
 ```
@@ -533,9 +540,9 @@ sys_command(form, UI_FORM_UPDATE_NODE, "a",      FORM_NODE_HIDDEN,  false)
 sys_command(form, UI_FORM_UPDATE_NODE, "sample", FORM_NODE_VISIBLE, false)
 ```
 
-## Typing
+## 타입 검사
 
-* 성능이 중요하지 않은 코드에서는 함수 인수에 대한 형식 검사 어설션을 추가하는 것이 유용할 수 있습니다.
+* 성능이 중요하지 않은 코드에서는 `assert()` 함수를 통한 형식검사가 좋습니다
 
 ```lua
 function manif.load_manifest(repo_url, lua_version)
@@ -546,15 +553,15 @@ function manif.load_manifest(repo_url, lua_version)
 end
 ```
 
-> **Rationale:** 이것은 LuaRocks 개발 초기에 채택된 방식으로 많은 경우에 유익한 것으로 나타났습니다.
+> **Rationale:** 이것은 LuaRocks 개발 초기에 채택된 방식입니다
 
 * 형식 변환시 표준 함수를 사용하세요
 
 ```lua
--- bad
+-- 나쁜예
 local total_score = review_score .. ""
 
--- good
+-- 좋은예
 local total_score = tostring(review_score)
 ```
 
@@ -579,7 +586,7 @@ bar.say("hello") -- using the module
 * 임의로 모듈의 이름을 바꾸지 마십시오.
 
 ```lua
--- bad
+-- 나쁜예
 local skt = require("socket")
 ```
 
@@ -614,20 +621,21 @@ end
 
 > **Rationale:** 모듈은 Lua 인터프리터 또는 기타 도구를 통해 내용을 검사할 수 있도록 테이블을 반환해야 합니다.
 
-* 모듈을 요구하면 다른 모듈을 로드하고 모듈 테이블을 반환하는 것 외에는 부작용이 발생하지 않아야 합니다.
+* 모듈을 `require` 하면 다른 모듈을 로드하고 모듈 테이블을 반환하는 것 외에는 부작용이 발생하지 않아야 합니다.
 
-* 모듈에는 상태 값이나 변수가 없어야 합니다. 모듈에 구성이 필요한 경우 공장으로 전환하십시오. 예를 들어 다음과 같이 만들지 마십시오
+* 모듈에는 상태 값이나 변수가 없어야 합니다. 모듈에 구성이 필요한 경우 `factory` 에게 위임하세요.
+예를 들어 다음과 같이 만들지 마세요
 
 ```lua
--- bad
+-- 나쁜예
 local mp = require "MessagePack"
 mp.set_integer("unsigned")
 ```
 
-대신 다음과 같이 하십시오.
+위 방법보단 아래가 좋습니다
 
 ```lua
--- good
+-- 좋은예
 local messagepack = require("messagepack")
 local mpack = messagepack.new({integer = "unsigned"})
 ```
@@ -635,16 +643,16 @@ local mpack = messagepack.new({integer = "unsigned"})
 * require 호출은 일반적인 Lua 함수 호출처럼 보여야 합니다.
 
 ```lua
--- bad
+-- 나쁜예
 local bla = require "bla"
 
--- good
+-- 좋은예
 local bla = require("bla")
 ```
 
 > **해석:** 이것은 require가 키워드가 아니라 함수 호출이라는 것을 명시적으로 만듭니다. 다른 많은 언어는 이 목적을 위해 키워드를 사용하므로 require에 "특별한 구문"을 사용하면 Lua를 처음 접하는 사람들을 곤경에 빠뜨릴 수 있습니다.
 
-## 객체지향
+## 객체 지향
 
 * 다음과 같은 방법으로 클래스를 만듭니다.
 
@@ -681,9 +689,9 @@ return myclass
 * 메소드를 호출할 때 메소드 표기법을 사용하십시오:
 
 ```lua
--- bad 
+-- 나쁜예 
 my_object.my_method(my_object)
--- good
+-- 좋은예
 my_object:my_method()
 ```
 
