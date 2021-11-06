@@ -107,12 +107,12 @@
       ```lua
       -- 나쁜예
       local function hello ( name, language )
-         -- code
+         -- 코드
       end
 
       -- 좋은예
       local function hello(name, language)
-         -- code
+         -- 코드
       end
       ```
 
@@ -121,19 +121,19 @@
       ```lua
       -- 나쁜예
       local function foo()
-         -- code
+         -- 코드
       end
       local function bar()
-         -- code
+         -- 코드
       end
 
       -- 좋은예
       local function foo()
-         -- code
+         -- 코드
       end
 
       local function bar()
-         -- code
+         -- 코드
       end
       ```
 
@@ -170,9 +170,9 @@
       -- @param repo_url string URL or pathname for the repository.
       -- @param lua_version string Lua version in "5.x" format, defaults to installed version.
       -- @return table or (nil, string, [string]) A table representing the manifest,
-      -- or nil followed by an error message and an optional error code.
+      -- or nil followed by an error message and an optional error 코드.
       function manif.load_manifest(repo_url, lua_version)
-         -- code
+         -- 코드
       end
       ```
 
@@ -222,13 +222,6 @@
       print(foo[1], bar[1]) -- => 3   3
       print(foo[2], bar[2]) -- => 2   2		
       ```
-
-
-
-
-
-
-
 
 ## <a name='tables'>테이블</a>
 
@@ -397,7 +390,7 @@
       -- 나쁜예
       local my_module = {
          a = function(x)
-         -- code
+         -- 코드
          end
       }
 
@@ -405,7 +398,7 @@
       local my_module = {}
 
       function my_module.a(x)
-         -- code
+         -- 코드
       end
       ```
 
@@ -415,15 +408,15 @@
       -- 좋은예
       local version_mt = {
          __eq = function(a, b)
-            -- code
+            -- 코드
          end,
          __lt = function(a, b)
-            -- code
+            -- 코드
          end,
       }
 
       version_mt.method1 = function()
-         -- code
+         -- 코드
       end
       ```
 
@@ -738,15 +731,13 @@
 
    * 모듈 안에서는 로컬 함수만 선언합니다. 모듈 내부의 함수는 외부에서 액세스할 수 없게 하는 것이 원칙입니다. 즉, `local function helper_foo()` 는 `helper_foo` 가 실제로 로컬임을 의미합니다.
 
-   * 공용 함수는 점 구문을 사용하여 모듈 테이블에 선언됩니다.
+   * 멤버 함수는 점 구문을 사용하여 모듈 테이블에 선언됩니다.
 
       ```lua
       function bar.say(greeting)
          print(greeting)
       end
       ```
-
-      > **Rationale:** Visibility rules are made explicit through syntax. 
 
    * 모듈에 전역을 설정하지 말고 항상 마지막에 테이블을 반환하십시오.
 
@@ -783,7 +774,7 @@
       local bla = require("bla")
       ```
 
-      > **해석:** 이것은 require가 키워드가 아니라 함수 호출이라는 것을 명시적으로 만듭니다. 다른 많은 언어는 이 목적을 위해 키워드를 사용하므로 require에 "특별한 구문"을 사용하면 Lua를 처음 접하는 사람들을 곤경에 빠뜨릴 수 있습니다.
+      > **해석:** 이것은 `require` 가 키워드가 아니라 함수 호출이라는 것을 암묵적으로 표현합니다. 다른 많은 언어가 위와 같은 문법을 따르므로 `require` 에 특별한 구문을 사용하면 `Lua` 를 처음 접하는 사람들을 곤경에 빠뜨릴 수 있습니다.
 
 ## <a name='oop'>객체 지향</a>
 
@@ -793,16 +784,16 @@
       --- @module myproject.myclass
       local myclass = {}
 
-      -- class table
+      --- @class table
       local MyClass = {}
 
       function MyClass:some_method()
-         -- code
+         -- 코드
       end
 
       function MyClass:another_one()
          self:some_method()
-         -- more code
+         -- more 코드
       end
 
       function myclass.new()
@@ -817,9 +808,10 @@
    * 클래스 테이블과 클래스 메타테이블은 모두 로컬이어야 합니다. 메타메소드를 포함하는 경우 메타테이블은 MyClass_mt라는 최상위 로컬로 선언될 수 있습니다.
 
    > **해석:** 
-   위의 코드에서 서명에 MyClass가 있는 함수가 메서드라는 것을 쉽게 알 수 있습니다. 이에 대한 설계 근거에 대한 더 깊은 논의는 [여기](http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/).에서 찾을 수 있습니다. 
+   위의 코드에서 서명에 MyClass가 있는 함수가 메서드라는 것을 쉽게 알 수 있습니다. 
+   더 자세한 설계 근거는 [여기](http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/)에서 찾을 수 있습니다. 
 
-   * 메소드를 호출할 때 메소드 표기법을 사용하십시오:
+   * 메소드를 호출할 때 `:` 표기법을 사용하세요
 
       ```lua
       -- 나쁜예 
@@ -828,12 +820,12 @@
       my_object:my_method()
       ```
 
-      > **해석:** 이것은 의도가 OOP 메소드로 함수를 사용하는 것임을 명시합니다.
+      > **해석:** `:` 를 통한 호출은 암묵적으로 `OOP` 스타일의 메서드를 나타냅니다
 
 
-   * 메모리 이외의 리소스를 해제하기 위해 __gc 메타메서드에 의존하지 마십시오. 객체가 파일과 같은 리소스를 관리하는 경우 해당 API에 닫기 메서드를 추가하고 __gc를 통해 자동으로 닫지 마십시오. __gc를 통한 자동 닫기는 모듈 사용자가 가능한 한 빨리 리소스를 닫지 않도록 유도합니다. (표준 io 라이브러리는 이 권장 사항을 따르지 않으며 사용자는 종종 파일을 즉시 닫지 않으면 프로그램이 잠시 실행될 때 "열린 파일이 너무 많음" 오류가 발생할 수 있다는 사실을 잊어버립니다.)
+   * 메모리 이외의 리소스를 해제하기 위해 `__gc` 메타메서드에 의존하지 마세요. 객체가 파일과 같은 리소스를 관리하는 경우 해당 API에 `Destroy` 메서드를 추가하고 `__gc` 를 통해 자동으로 관리하지 마세요. `__gc` 를 통한 가비지 컬렉팅은 모듈의 사용이 끝나도 메모리가 유지될 확률이 높습니다. (표준 io 라이브러리는 이 권장 사항을 따르지 않으며 사용자는 종종 파일을 즉시 닫지 않으면 프로그램이 잠시 실행될 때 "열린 파일이 너무 많음" 오류가 발생할 수 있다는 사실을 잊어버립니다.)
 
-      > **해석:** 가비지 수집기는 메모리만 처리하는 자동 메모리 관리를 수행합니다. 가비지 수집기가 언제 호출되는지에 대한 보장은 없으며 메모리 압력은 다른 리소스에 대한 압력과 상관 관계가 없습니다.
+      > **해석:** 가비지 컬렉터는 자동 메모리 관리를 수행합니다. 가비지 컬렉터가 언제 호출 될지에 대한 보장이 없으며 가비지 컬렉터가 실행되는 시점은 다른 리소스와 상관 관계가 없습니다.
 
 
 
@@ -841,16 +833,16 @@
 
    * 실패할 수 있는 함수(예: `I/O` )는 오류 시 `nil` 및 문자열로 된 오류 메시지를 반환해야 하며, 그 뒤에 오류 코드와 같은 다른 반환 값이 올 수 있습니다.
 
-   * API 오용과 같은 오류가 발생하면 `error()` 또는 `assert()` 와 함께 오류가 발생해야 합니다.
+   * `API` 를 잘못 사용했을때는 `error()` 또는 `assert()` 와 함께 오류를 발생 시켜야합니다
 
-   * 루아 코드가 [luacheck](https://github.com/mpeterv/luacheck)를 통과하는 것이 가장 좋습니다
+   * 루아로 만들어진 코드는 [luacheck](https://github.com/mpeterv/luacheck) 를 통한 검사에서 통과하는 것이 가장 좋습니다
 
    * 사용되지 않은 변수, 인수 또는 루프 변수는 사용되지 않는 변수가 명시적으로 추가된 경우 무시되어야 합니다. 
    
-   * 일부 인수를 사용하지 않는 함수는 _ 변수를 추가하는 대신 정해진 갯수의 인수를 받는 것이 좋습니다
+   * 일부 인수를 사용하지 않거나 인수가 가변적인 함수는 `_` 변수를 추가하는 대신 정해진 갯수의 인수를 받는 것이 좋습니다
 
 
-   * `if` / `elseif` / `else` 블록의 시퀀스가 ​​"스위치/케이스" 스타일의 케이스 목록을 구현하고 케이스 중 하나가 "통과"를 의미하는 경우 luacheck 경고 542(분기인 경우 비어 있음)도 무시할 수 있습니다. 예를 들어:
+   * `if` / `elseif` / `else` 블록의 시퀀스가 ​​`Switch` / `Case` 스타일의 목록을 구현하고 `Case` 중 하나가 `통과` 를 의미하는 경우 luacheck 경고 542(분기인 경우 비어 있음)도 무시할 수 있습니다. 예를 들어:
 
 
       ```lua
@@ -865,13 +857,13 @@
 
 ## <a name='files'>파일 구조</a>
 
-   * Lua 파일의 이름은 모두 소문자로 지정해야 합니다.
+   * `Lua` 파일의 이름은 모두 소문자로 지정해야 합니다.
 
-   * Lua 파일은 최상위 src 디렉토리에 있어야 합니다. 메인 라이브러리 파일은 modulename.lua라고 해야 합니다.
+   * `Lua` 파일은 최상위 `src` 디렉토리에 있어야 합니다. 메인 라이브러리 파일은 `modulename.lua` 라고 해야 합니다.
 
-   * 테스트는 최상위 사양 디렉토리에 있어야 합니다. LuaRocks는 테스트를 위해 [Busted](http://olivinelabs.com/busted/)를 사용합니다.
+   * 테스트는 최상위 사양 디렉토리에 있어야 합니다. 테스트를 위해 [Busted](http://olivinelabs.com/busted/)같은 라이브러리를 사용할 수 있습니다
 
-   * 실행 파일은 src/bin 디렉토리에 있어야 합니다.
+   * 실행 파일은 `src/bin` 디렉토리에 있어야 합니다.
 
 
    
