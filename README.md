@@ -42,7 +42,7 @@
       -- 좋은예
       ```
 
-   * 항상 쉼표 뒤와 연산자와 기호 사이에 공백을 넣으세요
+   * 항상 쉼표와 연산자와 기호 뒤에 공백을 넣으세요
 
       ```lua
       -- 나쁜예
@@ -102,7 +102,7 @@
       local message = "Hello, "..user.."! This is your day # "..day.." in our platform!"
       ```
 
-   * 선언이나 인수에서 함수 이름 뒤에 공백이 없어야 합니다.
+   * 선언이나 인수에서 함수 이름 뒤에 공백이 없어야 합니다
 
       ```lua
       -- 나쁜예
@@ -149,9 +149,9 @@
       local long_identifier = 2
       ```
 
-      > **해석:** `git blame` 에 노이즈를 추가시킵니다
+      > **해석:** 파일 어노테이션을 활용할때 `git blame` 에 노이즈를 추가시킵니다
 
-   * 논리적 대응이 강조되어야 할 때 정렬이 때때로 유용합니다.
+   * 논리적 대응이 강조되어야 할 때는 정렬을 때때로 사용합니다
 
       ```lua
       -- okay
@@ -161,31 +161,29 @@
 
 ## <a name='annotation'>주석</a>
 
-   * [LDoc](https://stevedonovan.github.io/ldoc/) 스타일을 사용하여 문서화합니다. 각 매개변수 또는 반환 값 뒤에 입력 정보를 지정하는 것이 좋습니다.
+   * [LDoc](https://stevedonovan.github.io/ldoc/) 스타일을 사용하여 문서화합니다. 각 매개변수 또는 반환 값 뒤에 입력 정보를 지정하는 것이 좋습니다
 
       ```lua
-      --- Load a local or remote manifest describing a repository.
-      -- All functions that use manifest tables assume they were obtained
-      -- through either this function or load_local_manifest.
-      -- @param repo_url string URL or pathname for the repository.
-      -- @param lua_version string Lua version in "5.x" format, defaults to installed version.
-      -- @return table or (nil, string, [string]) A table representing the manifest,
-      -- or nil followed by an error message and an optional error 코드.
-      function manif.load_manifest(repo_url, lua_version)
+      -- 유닛이 공격을 할 때마다 발동되는 함수
+      ---@param attacker userdata 공격을 한 유닛
+      ---@param damaged_unit userdata 공격을 받은 유닛
+      ---@param dmg integer 공격시 대미지
+      ---@return integer 대미지
+      function observer.on_attack(attacker, damaged_unit, dmg)
          -- 코드
       end
       ```
 
-   * 주석에 TODO 및 FIXME 태그를 사용해 보세요. TODO는 나중에 구현될 누락된 기능을 나타냅니다. FIXME는 기존 코드의 문제점(비효율적인 구현, 버그, 불필요한 코드 등)을 나타냅니다.
+   * 주석에 `TODO` 및 `FIXME` 태그를 사용해 보세요. `TODO` 는 나중에 구현될 누락된 기능을 나타냅니다. `FIXME` 는 기존 코드의 문제점 (비효율적인 구현, 버그, 불필요한 코드 등)을 나타냅니다
 
       ```lua
-      -- TODO: implement method
+      -- TODO: 메소드 삽입하기
       local function something()
-         -- FIXME: check conditions
+         -- FIXME: 조건식 확인
       end
       ```
 
-   * 인라인 주석보다 `LDoc` 스타일의 주석이 많이 쓰입니다.
+   * 인라인 주석보다 `LDoc` 스타일의 주석이 많이 쓰입니다
 
 ## <a name='types'>루아타입</a>
 
@@ -205,7 +203,7 @@
       print(foo, bar) -- => 1	9
       ```
 
-  - **복합유형**: 복합 유형에 액세스할 때 해당 값에 대한 참조 작업을 수행합니다.
+  - **복합유형**: 복합 유형에 액세스할 때 해당 값에 대한 참조 작업을 수행합니다
 
     + `table`
     + `function`
@@ -230,18 +228,18 @@
       ```lua
       local player = {
          name = "Jack",
-         class = "Rogue",
+         class = "도적",
+         hp = 100
       }
       ```
 
-   * 가능한 위와 같은 구문을 사용하고, 식별자로 표현할 수 없는 이름을 사용할 때는 ["key"] 구문을 사용합니다, 선언시 이 두 표기법이 겹치는 것은 피해주세요
-
+   * 가능한 위와 같이 선언하고, 식별자로 표현할 수 없는 키값을 사용할 때는 `["key"]` 구문을 사용합니다. 이 두 표기법이 한 테이블에서 겹치는 것은 피해주세요
 
       ```lua
       table = {
          ["1394-E"] = val1,
          ["UTF-8"] = val2,
-         ["and"] = val2,
+         ["스킬종류"] = val2,
       }
       ```
 
@@ -249,15 +247,15 @@
 
       ```lua
       local luke = {
-         jedi = true,
+         wizard = true,
          age = 28,
       }
 
       -- 나쁜예
-      local is_jedi = luke["jedi"]
+      local is_wizard = luke["wizard"]
 
       -- 좋은예
-      local is_jedi = luke.jedi
+      local is_wizard = luke.wizard
       ```
 
    * 변수가 있는 속성에 액세스하거나 테이블을 `list` 로 사용하는 경우 대괄호 표기법 `[]` 을 사용합니다.
@@ -321,9 +319,86 @@
 
 ## <a name='functions'>함수</a>
 
-   * [작은 함수를 써야하는 이유](http://kiki.to/blog/2012/03/16/small-functions-are-good-for-the-universe/)
+   * [기능이 작은 함수는 건강에 이롭습니다](http://kiki.to/blog/2012/03/16/small-functions-are-good-for-the-universe/)
+      ```lua
+      -- 나쁜예
+      function Turret:update(dt)
+         -- 범위 내에서 가장 가까운 플레이어를 찾습니다
+         local t
+         local dx,dy,d
+         local cd = math.huge
+         for _,p in ipairs(Game.players)
+            dx = self.x - p.x
+            dy = self.y - p.y
+            d = dx*dx + dy*dy
+            if d < cd then
+               t = p
+               cd = d
+            end
+         end
 
-   * 변수형 선언 보다 함수형 선언이 좋습니다. 이렇게 하면 익명 함수를 구분하는 데 도움이 됩니다
+         -- 플레이어에게 총알을 발사합니다
+         if t then
+            Bullet.new(self.x, self.y, math.atan2(self.x - t.x, self.y - t.y))
+         end
+      end
+      ```
+
+      ```lua
+      -- 좋은예
+
+      -- 업데이트 함수
+      function Turret:update(dt)
+         local target = self:getTarget()
+         if target then self:shootAt(target) end
+      end
+
+      -- 타겟 구하기
+      function Turret:getTarget()
+         return self:getNearest(Game.players)
+      end
+
+      -- 가까운 타겟 구하기
+      function Turret:getNearest(objects)
+         local distance, nearest
+         local shortestDistance = math.huge
+         for _,object in ipairs(objects)
+            distance = self:getSquaredDistance(object)
+            if distance < shortestDistance then
+               nearest = object
+               shortestDistance = distance
+            end
+         end
+         return nearest
+      end
+
+      -- 제곱 거리 구하기
+      function Turret:getSquaredDistance(object)
+         local dx, dy = self.x - object.x, self.y - object.y
+         return dx*dx + dy*dy
+      end
+
+      -- 타겟에게 발사 하기
+      function Turret:shootAt(target)
+         Bullet.new(self.x, self.y, self:getAngle(target))
+      end
+
+      -- 각도 구하기
+      function Turret:getAngle(object)
+         return math.atan2(self.x - t.x, self.y - t.y)
+      end
+      ```
+
+      이렇게 각각 한가지 기능만 하는 작은 함수들로 쪼개어진 클래스를 만들어 놓으면 아래와 같이 단 4줄로 서브클래스를 만들 수 있습니다
+
+      ```lua
+      otherTurret  =  class ( 'otherTurret' ,  Turret ) 
+      function  otherTurret : getTarget () 
+         return  self : getNearest (Game.asteroids) 
+      end
+      ```
+
+   * 변수형 선언 보다 함수형 선언을 합니다. 이렇게 하면 익명 함수를 구분하는 데 도움이 됩니다
 
       ```lua
       -- 나쁜예
@@ -337,7 +412,7 @@
       end
       ```
 
-   * 루아 함수의 유효성 검사는 최대한 빨리 검사하고 값 또한 되도록 빨리 반환시켜주는 것이 좋습니다
+   * 루아 함수의 유효성 검사는 함수 안에서 최대한 빨리 검사하고 값 또한 되도록 빨리 반환시켜주는 것이 좋습니다
 
       ```lua
       -- 나쁜예
@@ -362,27 +437,41 @@
       end
       ```
 
-   * 함수 호출시 문자열 인수가 1개라면 괄호를 생략 가능 하지만 되도록 하지 않습니다
+   * 함수 호출시 문자열 인수가 1개라도 괄호를 생략하지 않습니다
 
       ```lua
       -- 나쁜예
-      local data = get_data"KRP"..tostring(area_number)
+      local data = get_data"Monster"..tostring(map_name)
+      local data = get_data"Monster"
 
       -- 좋은예
-      local data = get_data("KRP"..tostring(area_number))
-      local data = get_data("KRP")..tostring(area_number)
+      local data = get_data("Monster"..tostring(map_name))
+      local data = get_data("Monster")..tostring(map_name)
       ```
 
    * 함수 인자로 테이블 을 1개만 받을 경우 괄호를 생략합니다
 
       ```lua
-      local an_instance = a_module.new {
-         a_parameter = 42,
-         another_parameter = "yay",
+      -- 나쁜예
+      local goblin = monster.new (
+         {
+            hp = 42,
+            say = function()
+               return "그르르......"
+            end,
+         }
+      )
+
+      -- 좋은예
+      local goblin = monster.new {
+         hp = 42,
+         say = function()
+            return "그르르......"
+         end,
       }
       ```
 
-      > **해석:** 위와 같이 한 개의 테이블을 인자로 받는 경우는 `우선 순위 문제` 가 발생하지 않습니다
+      > **해석:** 위와 같이 한 개의 테이블을 인자로 받는 경우는 `우선 순위 문제` 가 발생하지 않으며 가독성이 좋아집니다
 
    * 모듈 및 클래스를 선언할 때 테이블 외부에 함수를 선언합니다
 
@@ -402,9 +491,15 @@
       end
       ```
 
-   * 메타 테이블을 선언할 때 테이블 정의 내부에 함수를 선언합니다
+   * 메타 테이블을 선언할 때 메타 메서드는 테이블 내부에 정의해주세요
 
       ```lua
+      -- 나쁜예
+      local version_mt = {}
+      version_mt.__call = function(a, b)
+         -- 코드
+      end
+
       -- 좋은예
       local version_mt = {
          __eq = function(a, b)
@@ -427,13 +522,13 @@
 
 ## <a name='variables'>변수</a>
 
-   * 한 글자로 된 변수 이름은 피해야 합니다.
+   * 한 글자로 된 변수 이름은 피해야 합니다
 
    * 변수이름 `i` 는 `for` 문에서 카운팅 변수로만 사용해야 합니다
 
    * 키와 값을 가진 테이블을 순회할 때 `k` 및 `v` 보다 자세한 이름이 좋습니다
 
-   * 무시되거나 안쓰는 변수에는 `_` 를 사용하세요.
+   * 무시되거나 안쓰는 변수에는 `_` 를 사용하세요
 
       ```lua
       for _, item in ipairs(items) do
@@ -441,7 +536,7 @@
       end
       ```
 
-   * 변수 및 함수 이름은 주로 snake_case를 사용합니다.
+   * 변수 및 함수 이름은 주로 snake_case를 사용합니다
 
       ```lua
       -- 나쁜예
@@ -459,9 +554,9 @@
       end
       ```
 
-      > **해석:** 표준 라이브러리는 소문자 이름이 결합된 소문자 API를 사용하지만 더 복잡한 API에서는 확장성이 좋지 않습니다. Snake_case는 표준 API와 함께 적절하게 보이는 경향이 있습니다.
+      > **해석:** 표준 라이브러리는 소문자 이름이 결합된 소문자 API를 사용하지만 더 복잡한 API에서는 확장성이 좋지 않습니다. Snake_case는 표준 API와 함께 적절하게 보이는 경향이 있습니다
 
-   * 객체 지향으로 코딩할 때 클래스는 CamelCase를 사용해야 합니다. 약어(예: XML)는 첫 번째 문자(XmlDocument)만 대문자여야 합니다. 메소드는 snake_case를 사용합니다.
+   * 객체 지향으로 코딩할 때 클래스는 `camelCase` 를 사용해야 합니다. 약어(예: HP)는 첫 번째 문자(Hp)만 대문자여야 합니다. 메소드는 `snake_case` 를 사용합니다
 
       ```lua
       for _, name in pairs(names) do
@@ -494,11 +589,25 @@
       end
       ```
 
-   * `UPPER_CASE` 오직 상수만 사용합니다
+   * `UPPER_CASE` 오직 프로그램이 동작 중에는 변하지 않는 상수만 사용합니다
+      ```lua
+      local CONST = {
+         IMPORTANT_KEY = 1
+         IMPORTANT_KEY2 = 2
+         IMPORTANT_KEY3 = 3
+      }
+      ```
 
-   * `_` 로 시작하는 대문자 이름을 사용하지 마세요. lua의 예약어 규칙입니다
+   * `UPPER_CASE` 로 작명시 `_` 로 시작하는 대문자 이름을 사용하지 마세요. `lua` 의 예약어 규칙입니다
+      ```lua
+      -- 나쁜예
+      local _MY_CONST_VAR_NUMBER = 101
 
-   * 변수를 선언할 때는 항상 `local` 키워드를 사용하세요.
+      -- 좋은예
+      local MY_CONST_VAR_NUMBER = 101
+      ```
+
+   * 변수를 선언할 때는 반드시 `local` 키워드를 사용하세요.
 
       ```lua
       -- 나쁜예
@@ -508,11 +617,11 @@
       local superpower = get_superpower()
       ```
 
-      > **해석:** 전역 공간의 오염을 피하기 위한 방법입니다
+      > **해석:** `lua` 의 스크립팅 원칙은 기본적으로 전역 변수를 피해야합니다
 
    * 가능한 가장 작은 범위 단위로 변수를 할당하세요
 
-   * 가능한 경우 해당 범위의 맨 위에 변수를 할당합니다. 이렇게 하면 기존 변수를 더 쉽게 확인할 수 있습니다.
+   * 변수가 접근 가능한 범위의 맨 위에 변수를 선언하세요. 이렇게 하면 기존 변수를 더 쉽게 확인할 수 있습니다
 
       ```lua
       -- 나쁜예
@@ -547,13 +656,13 @@
       end
       ```
 
-      > **해석:** Lua에는 적절한 렉시컬 스코프가 있습니다. 변수의 범위가 좁을 수록 이펙트를 확인하기 쉬워집니다
+      > **해석:** `Lua` 에는 렉시컬 스코프가 있습니다. 변수의 범위가 좁을 수록 디버깅이 쉬워집니다
 
 ## <a name='conditions'>조건식</a>
 
-   * `False` 및 `nil` 은 조건식에서 거짓입니다. `false` 와 `nil` 의 차이를 알아야 하는 경우가 아니면 아래와 같은 방법이 좋습니다
-
-   * `nil` 과 `false` 의 차이에 의존하는 API를 설계하지 마세요
+   * `false` 및 `nil` 은 조건식에서 `거짓` 이며, 그 외의 자료형은 모두 `참`입니다
+   
+   * `false` 와 `nil` 의 차이를 알아야 하는 경우가 아니라면, `nil` 과 `false` 의 차이에 의존하는 `API` 를 설계하지 마세요
 
       ```lua
       -- 나쁜예
@@ -567,36 +676,38 @@
       end
       ```
 
-   * 대부분의 조건식에서는 `false` 보다 `true` 를 확인하는 것이 좋습니다
+   * 대부분의 조건식 상황에서는 `false` 보다 `true` 를 확인하는 것이 좋습니다
 
       ```lua
       -- 나쁜예
       if not thing then
-      -- ...stuff...
-      else
       -- ...stuff...
       end
 
       -- 좋은예
       if thing then
       -- ...stuff...
-      else
-      -- ...stuff...
       end
       ```
 
-   * 리턴 값으로 `nil` 을 내뱉는 함수 디자인을 피해주세요
-
-   * 삼항 연산자로 `nil` 리턴을 막을수 있다면 사용하는 것이 좋습니다
+   * 리턴 값으로 `nil` 을 내뱉는 함수 디자인을 피해주세요. 삼항 연산자로 `nil` 리턴을 막을수 있다면 적극 사용하는 것이 좋습니다
 
       ```lua
+      -- 나쁜예
+      local function normal_name(name)
+         -- do something..
+         return name
+      end
+
+      -- 좋은예
       local function default_name(name)
-         -- return the default "Waldo" if name is nil
-         return name or "Waldo"
+         -- name이 nil 이라면 "Spiegel"을 리턴한다
+         return name or "Spiegel"
       end
 
       local function brew_coffee(machine)
-         return (machine and machine.is_loaded) and "coffee brewing" or "fill your water"
+         -- 조건식에 괄호를 이용하면 시각적으로 더 잘 보이게 할 수 있습니다
+         return (machine and machine.is_loaded) and "커피 만드는중" or "물을 채워주세요"
       end
       ```
 
@@ -610,7 +721,7 @@
       if first and last then
          name = first .. ' ' .. last
       else
-         name = 'John Smith'
+         name = 'John'
       end
 
       return name
@@ -618,7 +729,7 @@
 
       -- 좋은예
       local function full_name(first, last)
-      local name = 'John Smith'
+      local name = 'John'
 
       if first and last then
          name = first .. ' ' .. last
@@ -641,18 +752,18 @@
       if test then break end
 
       -- 좋은예
-      if not ok then return nil, "this failed for this reason: " .. reason end
+      if not ok then return nil, "다음과 같은 이유로 실패했습니다: " .. reason end
 
       -- 좋은예
       use_callback(x, function(k) return k.last end)
 
       -- 좋은예
       if test then
-      return false
+         return false
       end
 
       -- 나쁜예
-      if test < 1 and do_complicated_function(test) == false or seven == 8 and nine == 10 then do_other_complicated_function() end
+      if test < 1 and do_complicated_function(test) == false or seven == 8 and nine == 10 then do_other_complicated_function() return end
 
       -- 좋은예
       if test < 1 and do_complicated_function(test) == false or seven == 8 and nine == 10 then
@@ -661,7 +772,7 @@
       end
       ```
 
-   * 문장을 여러 줄로 분리하세요. 구분자로 세미콜론을 사용하지 마세요
+   * 문장을 여러 줄로 분리하세요. 구분자의 용도로 세미콜론을 사용하지 마세요
 
       ```lua
       -- 나쁜예
@@ -693,6 +804,8 @@
       -- 나쁜예
       local total_score = review_score .. ""
 
+      local total_score = review_score + 0
+
       -- 좋은예
       local total_score = tostring(review_score)
       ```
@@ -704,10 +817,10 @@
    * 모듈을 `require` 할 변수는 항상 `local` 소문자 변수 이름이어야 합니다.
 
       ```lua
-      local bar = require("foo.bar") -- requiring the module
+      local bar = require("foo.bar") 
       local goo = require("foo.goo")
 
-      bar.say("hello") -- using the module
+      bar.say("hello") 
       goo.bye("Bye")
       ```
 
@@ -752,19 +865,21 @@
 
       ```lua
       -- 나쁜예
-      local mp = require "MessagePack"
-      mp.set_integer("unsigned")
-      ```
-
-      위 방법보단 아래가 좋습니다
-
-      ```lua
+      local my_player = require "player"
+      my_player.set_str(50)
+      
       -- 좋은예
-      local messagepack = require("messagepack")
-      local mpack = messagepack.new({integer = "unsigned"})
+      local Player = require("player")
+      local my_player = Player.new({str = 50})
+
+      -- 좋은예
+      local player = require("player")
+      local my_player = Player.new()
+      -- 가져온 모듈이 클래스이고 생성된 객체가 인스턴스인 경우 setter나 getter를 쓸 수 있습니다
+      my_player.set_str(50)
       ```
 
-   * require 호출은 일반적인 Lua 함수 호출처럼 보여야 합니다.
+   * `require` 호출은 일반적인 `Lua` 함수 호출처럼 보여야 합니다.
 
       ```lua
       -- 나쁜예
@@ -781,11 +896,14 @@
    * 다음과 같은 방법으로 클래스를 만듭니다.
 
       ```lua
-      --- @module myproject.myclass
+      --- @module ServerScripts.myclass
       local myclass = {}
+
+      local MyClass_mt = {}
 
       --- @class table
       local MyClass = {}
+      setmetatable(MyClass, MyClass_mt)
 
       function MyClass:some_method()
          -- 코드
@@ -805,11 +923,11 @@
       return myclass
       ```
 
-   * 클래스 테이블과 클래스 메타테이블은 모두 로컬이어야 합니다. 메타메소드를 포함하는 경우 메타테이블은 MyClass_mt라는 최상위 로컬로 선언될 수 있습니다.
+   * 클래스 테이블과 클래스 메타테이블은 모두 `local` 이어야 합니다. 메타메소드를 포함하는 경우 메타테이블은 MyClass_mt라는 최상위 로컬로 선언될 수 있습니다.
 
    > **해석:** 
-   위의 코드에서 서명에 MyClass가 있는 함수가 메서드라는 것을 쉽게 알 수 있습니다. 
-   더 자세한 설계 근거는 [여기](http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/)에서 찾을 수 있습니다. 
+   위의 코드에서 MyClass가 붙은 함수가 메서드라는 것을 쉽게 알 수 있습니다. 
+   더 자세한 설계 근거는 [여기](http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/)를 확인하세요
 
    * 메소드를 호출할 때 `:` 표기법을 사용하세요
 
@@ -820,7 +938,7 @@
       my_object:my_method()
       ```
 
-      > **해석:** `:` 를 통한 호출은 암묵적으로 `OOP` 스타일의 메서드를 나타냅니다
+      > **해석:** `:` 를 통한 호출은 암묵적으로 `객체지향` 스타일의 메서드를 나타냅니다
 
 
    * 메모리 이외의 리소스를 해제하기 위해 `__gc` 메타메서드에 의존하지 마세요. 객체가 파일과 같은 리소스를 관리하는 경우 해당 API에 `Destroy` 메서드를 추가하고 `__gc` 를 통해 자동으로 관리하지 마세요. `__gc` 를 통한 가비지 컬렉팅은 모듈의 사용이 끝나도 메모리가 유지될 확률이 높습니다. (표준 io 라이브러리는 이 권장 사항을 따르지 않으며 사용자는 종종 파일을 즉시 닫지 않으면 프로그램이 잠시 실행될 때 "열린 파일이 너무 많음" 오류가 발생할 수 있다는 사실을 잊어버립니다.)
